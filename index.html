@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ViaMath — Petualangan Pecahan</title>
+  <meta name="description" content="Media pembelajaran pecahan interaktif untuk siswa Kelas 5 SD dengan model Problem Based Learning." />
+  <!-- Favicon inline (π) — hindari 404 favicon.ico -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%235B8DEF'/%3E%3Ctext x='50' y='70' font-size='60' font-family='Nunito,sans-serif' font-weight='900' fill='white' text-anchor='middle'%3E%CF%80%3C/text%3E%3C/svg%3E" />
+
+  <!-- Tailwind (CDN, tanpa build step) -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <!-- Ikon Lucide -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <!-- Font Nunito -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { nunito: ['Nunito', 'sans-serif'] },
+          colors: {
+            indigo: { brand: '#5B8DEF' },
+            purple: { brand: '#A78BFA' },
+            mint: '#6EE7B7', soft: '#FCD34D', peach: '#FDBA74',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="h-full">
+  <!-- Kontainer aplikasi. Onboarding mengambil alih kontainer ini bila siswa belum terdaftar. -->
+  <div id="vm-app" class="h-full">
+
+    <!-- Shell utama (disembunyikan sampai onboarding selesai) -->
+    <div id="vm-shell" class="hidden flex min-h-full w-full">
+      <div id="vm-overlay"></div>
+
+      <!-- Sidebar -->
+      <aside id="vm-sidebar" class="flex flex-col">
+        <div class="p-5 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-white font-black text-xl"
+                 style="background:linear-gradient(135deg,var(--indigo),var(--purple))">π</div>
+            <div>
+              <h1 class="text-base font-black text-slate-800 leading-tight">ViaMath</h1>
+              <p id="vm-tagline" class="text-xs text-slate-500 font-semibold">Petualangan Pecahan</p>
+            </div>
+          </div>
+        </div>
+        <nav id="vm-nav" class="flex-1 p-3 space-y-1.5"></nav>
+        <div class="p-4 border-t border-slate-100">
+          <div class="text-center p-3 rounded-2xl" style="background:linear-gradient(135deg,rgba(91,141,239,.08),rgba(167,139,250,.08))">
+            <p class="text-xs font-black text-indigo-brand">Belajar Sambil Bertualang</p>
+            <p class="text-[11px] text-slate-500 mt-0.5 font-semibold">Matematika Kelas 5 SD</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Konten -->
+      <div class="flex-1 flex flex-col min-w-0">
+        <header class="vm-glass sticky top-0 z-30 px-4 py-3">
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+              <button onclick="vmToggleSidebar()" class="md:hidden vm-btn vm-btn-ghost" style="min-height:40px;padding:0 .6rem" aria-label="Buka menu">
+                <i data-lucide="menu"></i>
+              </button>
+              <div class="min-w-0">
+                <p class="text-sm font-black text-slate-800 truncate">Halo, <span id="vm-headname">Sobat</span>!</p>
+                <p class="text-[11px] text-slate-500 font-semibold">Ayo lanjut bertualang</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 text-sm shrink-0">
+              <span class="vm-chip" style="background:#FEF9C3;color:#A16207"><i data-lucide="star" style="width:16px;height:16px"></i> <span id="vm-score">0</span></span>
+              <span class="vm-chip" style="background:#F3E8FF;color:#7C3AED"><i data-lucide="award" style="width:16px;height:16px"></i> <span id="vm-badges">0</span></span>
+              <span class="vm-chip" style="background:#DCFCE7;color:#15803D"><i data-lucide="trending-up" style="width:16px;height:16px"></i> <span id="vm-pct">0%</span></span>
+            </div>
+          </div>
+        </header>
+
+        <main id="vm-main" class="flex-1 w-full max-w-5xl mx-auto px-4 pb-10 pt-5"></main>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
