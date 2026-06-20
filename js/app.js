@@ -45,6 +45,33 @@ function toggleSidebar() { document.getElementById('vm-sidebar').classList.toggl
 function closeSidebar() { document.getElementById('vm-sidebar').classList.remove('open'); document.getElementById('vm-overlay').classList.remove('open'); }
 window.vmToggleSidebar = toggleSidebar;
 
+// ---- Keluar / ganti pemain ----
+// Bukan "logout" berpassword: membersihkan identitas & progres DI PERANGKAT INI, lalu kembali
+// ke layar awal. Data yang sudah terkirim ke guru/peneliti TIDAK terhapus (sudah di server).
+function logout() {
+  const ok = window.confirm(
+    'Yakin mau keluar?\n\nKamu akan kembali ke layar awal, dan perangkat ini siap untuk pemain lain. ' +
+    'Progres di perangkat ini akan dimulai dari awal.'
+  );
+  if (!ok) return;
+  Api.flush();          // pastikan antrean tersinkron dulu (best-effort)
+  Store.reset();        // bersihkan state lokal
+  location.hash = '';   // kembali ke awal
+  document.getElementById('vm-shell').classList.add('hidden');
+  closeSidebar();
+  launchOnboarding();   // tampilkan layar "Kenalan dulu" lagi
+}
+window.vmLogout = logout;
+
+// Tampilkan onboarding di overlay terpisah; setelah selesai → mulai app.
+function launchOnboarding() {
+  const ob = document.createElement('div');
+  ob.id = 'vm-onboarding';
+  ob.style.cssText = 'position:fixed;inset:0;z-index:60;background:var(--bg);overflow:auto';
+  document.body.appendChild(ob);
+  renderOnboarding(ob, () => { ob.remove(); startApp(); });
+}
+
 // ---- Header & progres ----
 function refreshChrome(activeId) {
   // tandai nav aktif
@@ -74,12 +101,7 @@ function boot() {
   Api.flush(); // coba sinkronkan antrean tertunda
 
   if (!Store.hasStudent()) {
-    // Onboarding tampil di overlay TERPISAH (jangan menimpa #vm-shell). Hapus diri saat selesai.
-    const ob = document.createElement('div');
-    ob.id = 'vm-onboarding';
-    ob.style.cssText = 'position:fixed;inset:0;z-index:60;background:var(--bg);overflow:auto';
-    document.body.appendChild(ob);
-    renderOnboarding(ob, () => { ob.remove(); startApp(); });
+    launchOnboarding();
   } else {
     startApp();
   }
