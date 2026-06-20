@@ -19,8 +19,8 @@ export function renderPenyelidikan(container) {
     ${pageHeader('search', 'Mari Selidiki', 'Saatnya jadi penyelidik pecahan! Pelajari sumbernya, lalu pecahkan setiap tantangan.')}
     ${mascotNote('Pelajari dulu "Sumber Belajar" untuk membantumu, lalu kerjakan "Tantangan Penyelidikan". Kamu pasti bisa!')}
     <div class="flex gap-2 vm-scroll-x pb-1">
-      <button data-tab="materi" class="vm-btn"><i data-lucide="book-open"></i> Sumber Belajar</button>
-      <button data-tab="aktivitas" class="vm-btn"><i data-lucide="flask-conical"></i> Tantangan Penyelidikan</button>
+      <button data-tab="materi" class="vm-btn"><i class="ph-duotone ph-book-open"></i> Sumber Belajar</button>
+      <button data-tab="aktivitas" class="vm-btn"><i class="ph-duotone ph-flask"></i> Tantangan Penyelidikan</button>
     </div>
     <div id="peny-body"></div>`;
 
@@ -53,7 +53,7 @@ function renderMateri() {
   const pengertian = document.createElement('section');
   pengertian.className = 'vm-card p-6';
   pengertian.innerHTML = `
-    <h3 class="font-black text-slate-800 mb-3 flex items-center gap-2"><i data-lucide="book-open" style="color:var(--indigo)"></i> Apa itu Pecahan?</h3>
+    <h3 class="font-black text-slate-800 mb-3 flex items-center gap-2"><i class="ph-duotone ph-book-open" style="color:var(--indigo)"></i> Apa itu Pecahan?</h3>
     <p class="text-slate-600 font-semibold">Pecahan adalah bilangan yang menunjukkan <b>bagian dari keseluruhan</b>, ditulis dengan dua angka dipisah garis.</p>
     <div class="flex items-center justify-center gap-6 my-4">
       ${fracHTML('a', 'b')}
@@ -63,9 +63,9 @@ function renderMateri() {
       </div>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">
-      ${[['🍕', 3, 8, 'Pizza'], ['🍉', 1, 2, 'Semangka'], ['🍫', 3, 8, 'Cokelat'], ['🎂', 1, 4, 'Kue']].map(
-        ([e, a, b, nama]) => `<div class="vm-card p-3 text-center" style="box-shadow:none">
-          <div class="text-3xl">${e}</div>${fracHTML(a, b)}<p class="text-xs text-slate-500 font-bold mt-1">${nama}</p></div>`
+      ${[['pizza', 3, 8, 'Pizza'], ['orange-slice', 1, 2, 'Semangka'], ['cookie', 3, 8, 'Cokelat'], ['cake', 1, 4, 'Kue']].map(
+        ([ic, a, b, nama]) => `<div class="vm-card p-3 text-center" style="box-shadow:none">
+          <div><i class="ph-duotone ph-${ic}" style="font-size:2rem;color:var(--peach)"></i></div>${fracHTML(a, b)}<p class="text-xs text-slate-500 font-bold mt-1">${nama}</p></div>`
       ).join('')}
     </div>`;
 
@@ -73,7 +73,7 @@ function renderMateri() {
   const visual = document.createElement('section');
   visual.className = 'vm-card p-6';
   visual.innerHTML = `
-    <h3 class="font-black text-slate-800 mb-3 flex items-center gap-2"><i data-lucide="circle-dashed" style="color:#0D9488"></i> Lihat & Coba Sendiri</h3>
+    <h3 class="font-black text-slate-800 mb-3 flex items-center gap-2"><i class="ph-duotone ph-circle-dashed" style="color:#0D9488"></i> Lihat & Coba Sendiri</h3>
     <p class="text-slate-500 font-semibold text-sm mb-4">Bandingkan bentuk pecahan lewat lingkaran berikut:</p>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center">
       ${[[1, 2, '#6EE7B7'], [1, 4, '#FCD34D'], [2, 3, '#A78BFA'], [3, 8, '#FDBA74']].map(
@@ -96,7 +96,7 @@ function renderMateri() {
     if (slot) {
       const note = document.createElement('p');
       note.className = 'text-sm font-bold text-slate-500 mb-2';
-      note.innerHTML = '👇 Geser untuk mengubah banyak bagian yang terisi:';
+      note.innerHTML = '<i class="ph-duotone ph-hand-pointing" style="color:var(--indigo)"></i> Geser untuk mengubah banyak bagian yang terisi:';
       slot.append(note, interactiveBar(8, 3, '#5B8DEF', null));
     }
     renderIcons();
@@ -115,7 +115,7 @@ function renderSenilaiLatihan() {
     { target: [2, 4], pil: [[1, 2, true], [3, 6, true], [2, 3, false]] },
   ];
   sec.innerHTML = `
-    <h3 class="font-black text-slate-800 mb-1 flex items-center gap-2"><i data-lucide="equal" style="color:#CA8A04"></i> Pecahan Senilai</h3>
+    <h3 class="font-black text-slate-800 mb-1 flex items-center gap-2"><i class="ph-duotone ph-equals" style="color:#CA8A04"></i> Pecahan Senilai</h3>
     <p class="text-slate-500 font-semibold text-sm mb-4">Pecahan senilai = nilainya sama walau angkanya beda. Klik yang <b>senilai</b> dengan soal!</p>
     <div class="space-y-4">
       ${soal.map((s, i) => `
@@ -136,8 +136,8 @@ function renderSenilaiLatihan() {
       const i = btn.dataset.soal;
       const fb = sec.querySelector(`[data-fb="${i}"]`);
       const benar = btn.dataset.benar === 'true';
-      if (benar) { fb.textContent = '✅ Benar! Itu senilai.'; fb.style.color = 'var(--ok)'; playSound(true); btn.classList.add('pop'); }
-      else { fb.textContent = '❌ Belum tepat, coba lagi ya.'; fb.style.color = 'var(--no)'; playSound(false); btn.classList.add('shake'); }
+      if (benar) { fb.innerHTML = '<i class="ph-duotone ph-check-circle"></i> Benar! Itu senilai.'; fb.style.color = 'var(--ok)'; playSound(true); btn.classList.add('pop'); }
+      else { fb.innerHTML = '<i class="ph-duotone ph-x-circle"></i> Belum tepat, coba lagi ya.'; fb.style.color = 'var(--no)'; playSound(false); btn.classList.add('shake'); }
       setTimeout(() => btn.classList.remove('pop', 'shake'), 500);
     });
   });
@@ -153,7 +153,7 @@ function renderBandingLatihan() {
     { tanya: 'Mana yang lebih kecil?', a: [1, 3], b: [2, 3], benar: 'a' },
   ];
   sec.innerHTML = `
-    <h3 class="font-black text-slate-800 mb-1 flex items-center gap-2"><i data-lucide="scale" style="color:#0D9488"></i> Membandingkan Pecahan</h3>
+    <h3 class="font-black text-slate-800 mb-1 flex items-center gap-2"><i class="ph-duotone ph-scales" style="color:#0D9488"></i> Membandingkan Pecahan</h3>
     <p class="text-slate-500 font-semibold text-sm mb-4">Gunakan tanda &lt;, &gt;, = . Klik pecahan yang diminta!</p>
     <div class="space-y-4">
       ${soal.map((s, i) => `
@@ -173,8 +173,8 @@ function renderBandingLatihan() {
     btn.addEventListener('click', () => {
       const fb = sec.querySelector(`[data-fb="${btn.dataset.soal}"]`);
       const benar = btn.dataset.benar === 'true';
-      if (benar) { fb.textContent = '✅ Tepat sekali!'; fb.style.color = 'var(--ok)'; playSound(true); btn.classList.add('pop'); }
-      else { fb.textContent = '❌ Hampir! Lihat panjang bar warnanya.'; fb.style.color = 'var(--no)'; playSound(false); btn.classList.add('shake'); }
+      if (benar) { fb.innerHTML = '<i class="ph-duotone ph-check-circle"></i> Tepat sekali!'; fb.style.color = 'var(--ok)'; playSound(true); btn.classList.add('pop'); }
+      else { fb.innerHTML = '<i class="ph-duotone ph-x-circle"></i> Hampir! Lihat panjang bar warnanya.'; fb.style.color = 'var(--no)'; playSound(false); btn.classList.add('shake'); }
       setTimeout(() => btn.classList.remove('pop', 'shake'), 500);
     });
   });
@@ -223,23 +223,23 @@ function renderAktivitas() {
     <section class="vm-card p-6" data-akt="${a.id}">
       <div class="flex items-center justify-between gap-2 mb-2">
         <h3 class="font-black text-slate-800">${a.judul}</h3>
-        ${a.pengayaan ? `<span class="vm-chip" style="background:#FEF3C7;color:#B45309"><i data-lucide="star" style="width:14px;height:14px"></i> PENGAYAAN</span>` : ''}
+        ${a.pengayaan ? `<span class="vm-chip" style="background:#FEF3C7;color:#B45309"><i class="ph-duotone ph-star" style="width:14px;height:14px"></i> PENGAYAAN</span>` : ''}
       </div>
-      <p class="text-sm text-slate-600 font-semibold p-3 rounded-xl mb-3" style="background:#F1F5F9">📖 ${a.masalah}</p>
+      <p class="text-sm text-slate-600 font-semibold p-3 rounded-xl mb-3 flex items-start gap-2" style="background:#F1F5F9"><i class="ph-duotone ph-book-open" style="margin-top:2px;color:var(--indigo)"></i> ${a.masalah}</p>
       <div class="space-y-3">
         ${a.soal.map((s, i) => `
           <div>
             <label class="text-sm font-bold text-slate-700 block mb-1.5">${s.t}</label>
             <div class="flex gap-2">
               <input class="vm-input akt-input" data-akt="${a.id}" data-soal="${i}" placeholder="Jawabanmu...">
-              <button class="vm-btn vm-btn-ghost akt-check" data-akt="${a.id}" data-soal="${i}" style="min-height:44px"><i data-lucide="check"></i></button>
+              <button class="vm-btn vm-btn-ghost akt-check" data-akt="${a.id}" data-soal="${i}" style="min-height:44px"><i class="ph-duotone ph-check"></i></button>
             </div>
             <p class="akt-fb text-sm font-bold mt-1" data-akt="${a.id}" data-soal="${i}"></p>
           </div>`).join('')}
       </div>
     </section>`).join('') + `
     <button id="peny-finish" class="vm-btn vm-btn-primary w-full" style="min-height:52px">
-      <i data-lucide="check-circle-2"></i> Penyelidikan Selesai!</button>`;
+      <i class="ph-duotone ph-check-circle"></i> Penyelidikan Selesai!</button>`;
 
   // cek tiap jawaban
   const solved = new Set();
@@ -254,7 +254,7 @@ function renderAktivitas() {
       const val = input.value;
       const benar = checkAnswer(val, akt.soal[sIdx].jawab);
       if (benar) {
-        fb.textContent = '✅ Benar! Hebat!'; fb.style.color = 'var(--ok)';
+        fb.innerHTML = '<i class="ph-duotone ph-check-circle"></i> Benar! Hebat!'; fb.style.color = 'var(--ok)';
         input.style.borderColor = 'var(--ok)'; playSound(true);
         if (!akt.pengayaan) solved.add(aId + '-' + sIdx);
         Store.saveAnswer(`penyelidikan-${aId}-${sIdx}`, val);
@@ -263,7 +263,7 @@ function renderAktivitas() {
         // perbarui proporsi progres
         Store.setProgress('penyelidikan', Math.min(1, solved.size / totalSoal));
       } else {
-        fb.textContent = '❌ Belum tepat. Coba periksa lagi ya!'; fb.style.color = 'var(--no)';
+        fb.innerHTML = '<i class="ph-duotone ph-x-circle"></i> Belum tepat. Coba periksa lagi ya!'; fb.style.color = 'var(--no)';
         input.style.borderColor = 'var(--no)'; input.classList.add('shake'); playSound(false);
         setTimeout(() => input.classList.remove('shake'), 500);
       }
@@ -277,7 +277,7 @@ function renderAktivitas() {
     }
     Store.setProgress('penyelidikan', 1);
     Store.addScore(20); Store.addBadge('penyelidik-ulung');
-    playSound(true); celebrate(); toast('Luar biasa! Kamu penyelidik ulung 🎉', 'ok');
+    playSound(true); celebrate(); toast('Luar biasa! Kamu penyelidik ulung', 'ok');
     setTimeout(() => Router.go('pameran'), 1000);
   });
 

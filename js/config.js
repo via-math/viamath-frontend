@@ -24,11 +24,11 @@ export const CONFIG = {
 // Urutan langkah petualangan (label SISWA — tanpa kata "Fase").
 // Pemetaan ke fase PBL Arends ada di kolom `phase` (dipakai backend/penelitian, bukan tampil ke anak).
 export const STEPS = [
-  { id: 'home',         label: 'Beranda',          icon: 'home',          phase: null },
-  { id: 'masalah',      label: 'Tantangan Cerita', icon: 'puzzle',        phase: 'orientasi' },
-  { id: 'organisasi',   label: 'Bentuk Tim',       icon: 'users',         phase: 'mengorganisasi' },
-  { id: 'penyelidikan', label: 'Mari Selidiki',    icon: 'search',        phase: 'penyelidikan' },
-  { id: 'pameran',      label: 'Pamerkan Hasil',   icon: 'sparkles',      phase: 'menyajikan' },
-  { id: 'asesmen',      label: 'Uji Kemampuan',    icon: 'clipboard-check', phase: 'asesmen' },
-  { id: 'refleksi',     label: 'Renungkan',        icon: 'heart',         phase: 'evaluasi' },
+  { id: 'home',         label: 'Beranda',          icon: 'house',            phase: null },
+  { id: 'masalah',      label: 'Tantangan Cerita', icon: 'puzzle-piece',     phase: 'orientasi' },
+  { id: 'organisasi',   label: 'Bentuk Tim',       icon: 'users',            phase: 'mengorganisasi' },
+  { id: 'penyelidikan', label: 'Mari Selidiki',    icon: 'magnifying-glass', phase: 'penyelidikan' },
+  { id: 'pameran',      label: 'Pamerkan Hasil',   icon: 'sparkle',          phase: 'menyajikan' },
+  { id: 'asesmen',      label: 'Uji Kemampuan',    icon: 'clipboard-text',   phase: 'asesmen' },
+  { id: 'refleksi',     label: 'Renungkan',        icon: 'heart',            phase: 'evaluasi' },
 ];

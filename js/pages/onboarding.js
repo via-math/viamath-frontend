@@ -19,7 +19,7 @@ export function renderOnboarding(container, onDone) {
          style="background:radial-gradient(1200px 600px at 70% -10%, rgba(167,139,250,.18), transparent), var(--bg)">
       <div class="vm-card fade-up w-full max-w-md p-7 md:p-9">
         <div class="text-center mb-6">
-          <div class="text-6xl floaty mb-2" aria-hidden="true">🦉</div>
+          <div class="floaty mb-2" aria-hidden="true"><i class="ph-duotone ph-bird" style="font-size:4.5rem;color:var(--indigo)"></i></div>
           <h1 class="text-2xl font-black text-slate-800">Selamat Datang di ViaMath!</h1>
           <p class="text-slate-500 font-semibold mt-1 text-sm">Aku <b>Sobat Pintar</b>, pemandu petualanganmu.<br>Kenalan dulu, yuk!</p>
         </div>
@@ -27,13 +27,13 @@ export function renderOnboarding(container, onDone) {
         <form id="ob-form" class="space-y-4">
           <div>
             <label class="block text-sm font-black text-slate-700 mb-1.5 flex items-center gap-1.5">
-              <i data-lucide="user" style="width:18px;height:18px;color:var(--indigo)"></i> Nama Panggilanmu
+              <i class="ph-duotone ph-user" style="width:18px;height:18px;color:var(--indigo)"></i> Nama Panggilanmu
             </label>
             <input id="ob-name" class="vm-input" placeholder="Contoh: Rara" autocomplete="off" required />
           </div>
           <div>
             <label class="block text-sm font-black text-slate-700 mb-1.5 flex items-center gap-1.5">
-              <i data-lucide="school" style="width:18px;height:18px;color:var(--indigo)"></i> Asal Sekolah
+              <i class="ph-duotone ph-student" style="width:18px;height:18px;color:var(--indigo)"></i> Asal Sekolah
             </label>
             <input id="ob-school" class="vm-input" placeholder="Contoh: SDN Mekar Jaya 1" autocomplete="off" required />
           </div>
@@ -58,7 +58,7 @@ export function renderOnboarding(container, onDone) {
           </div>
 
           <button type="submit" class="vm-btn vm-btn-primary w-full" style="min-height:50px">
-            <i data-lucide="rocket"></i> Mulai Petualangan
+            <i class="ph-duotone ph-rocket-launch"></i> Mulai Petualangan
           </button>
           <p class="text-[11px] text-center text-slate-400 font-semibold">
             Tanpa kata sandi. Datamu hanya untuk membantu gurumu memantau belajarmu.

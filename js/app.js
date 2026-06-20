@@ -30,7 +30,7 @@ function buildSidebar() {
   if (!nav) return;
   nav.innerHTML = STEPS.map((s) => `
     <button class="nav-item" data-step="${s.id}">
-      <i data-lucide="${s.icon}"></i><span>${s.label}</span>
+      <i class="ph-duotone ph-${s.icon}"></i><span>${s.label}</span>
     </button>`).join('');
   nav.querySelectorAll('[data-step]').forEach((btn) => {
     btn.addEventListener('click', () => {

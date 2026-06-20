@@ -10,8 +10,8 @@
 
   <!-- Tailwind (CDN, tanpa build step) -->
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <!-- Ikon Lucide -->
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <!-- Ikon Phosphor (duotone) — ramah anak, CSS-only, tanpa JS -->
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css" />
   <!-- Font Nunito -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/styles.css" />
@@ -66,7 +66,7 @@
           <div class="flex items-center justify-between gap-3">
             <div class="flex items-center gap-3 min-w-0">
               <button onclick="vmToggleSidebar()" class="md:hidden vm-btn vm-btn-ghost" style="min-height:40px;padding:0 .6rem" aria-label="Buka menu">
-                <i data-lucide="menu"></i>
+                <i class="ph-duotone ph-list" style="font-size:20px"></i>
               </button>
               <div class="min-w-0">
                 <p class="text-sm font-black text-slate-800 truncate">Halo, <span id="vm-headname">Sobat</span>!</p>
@@ -74,9 +74,9 @@
               </div>
             </div>
             <div class="flex items-center gap-2 text-sm shrink-0">
-              <span class="vm-chip" style="background:#FEF9C3;color:#A16207"><i data-lucide="star" style="width:16px;height:16px"></i> <span id="vm-score">0</span></span>
-              <span class="vm-chip" style="background:#F3E8FF;color:#7C3AED"><i data-lucide="award" style="width:16px;height:16px"></i> <span id="vm-badges">0</span></span>
-              <span class="vm-chip" style="background:#DCFCE7;color:#15803D"><i data-lucide="trending-up" style="width:16px;height:16px"></i> <span id="vm-pct">0%</span></span>
+              <span class="vm-chip" style="background:#FEF9C3;color:#A16207"><i class="ph-duotone ph-star"></i> <span id="vm-score">0</span></span>
+              <span class="vm-chip" style="background:#F3E8FF;color:#7C3AED"><i class="ph-duotone ph-medal"></i> <span id="vm-badges">0</span></span>
+              <span class="vm-chip" style="background:#DCFCE7;color:#15803D"><i class="ph-duotone ph-trend-up"></i> <span id="vm-pct">0%</span></span>
             </div>
           </div>
         </header>

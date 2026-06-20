@@ -17,31 +17,31 @@ export function renderPameran(container) {
     ${mascotNote('Inilah saat membanggakan: tunjukkan hasil kerja timmu! Buatlah sebuah soal pecahan dari kehidupan sehari-hari, lengkap dengan jawabannya.')}
 
     <section class="vm-card p-6">
-      <h3 class="font-black text-slate-800 mb-4 flex items-center gap-2"><i data-lucide="pencil-ruler" style="color:var(--indigo)"></i> Buat Karya Pecahanmu</h3>
+      <h3 class="font-black text-slate-800 mb-4 flex items-center gap-2"><i class="ph-duotone ph-pencil-ruler" style="color:var(--indigo)"></i> Buat Karya Pecahanmu</h3>
       <div class="space-y-4">
         <div>
-          <label class="text-sm font-black text-slate-700 block mb-1.5">📖 Judul Karya</label>
+          <label class="text-sm font-black text-slate-700 mb-1.5 flex items-center gap-1.5"><i class="ph-duotone ph-book-open" style="color:var(--indigo)"></i> Judul Karya</label>
           <input id="pm-title" class="vm-input" placeholder="Contoh: Membagi Martabak Manis">
         </div>
         <div>
-          <label class="text-sm font-black text-slate-700 block mb-1.5">🌍 Ceritakan situasinya</label>
+          <label class="text-sm font-black text-slate-700 mb-1.5 flex items-center gap-1.5"><i class="ph-duotone ph-globe-hemisphere-west" style="color:var(--indigo)"></i> Ceritakan situasinya</label>
           <textarea id="pm-situ" class="vm-textarea" placeholder="Contoh: Ibu membeli martabak yang dipotong 8 bagian..."></textarea>
         </div>
         <div>
-          <label class="text-sm font-black text-slate-700 block mb-1.5">❓ Soal pecahan buatanmu</label>
+          <label class="text-sm font-black text-slate-700 mb-1.5 flex items-center gap-1.5"><i class="ph-duotone ph-question" style="color:var(--indigo)"></i> Soal pecahan buatanmu</label>
           <textarea id="pm-soal" class="vm-textarea" placeholder="Contoh: Jika 3 potong dimakan, berapa pecahan yang dimakan?"></textarea>
         </div>
         <div>
-          <label class="text-sm font-black text-slate-700 block mb-1.5">✅ Jawaban & penjelasan</label>
+          <label class="text-sm font-black text-slate-700 mb-1.5 flex items-center gap-1.5"><i class="ph-duotone ph-check-circle" style="color:var(--ok)"></i> Jawaban & penjelasan</label>
           <textarea id="pm-jawab" class="vm-textarea" placeholder="Contoh: 3/8, karena 3 dari 8 bagian..."></textarea>
         </div>
         <button id="pm-publish" class="vm-btn vm-btn-primary w-full" style="min-height:50px">
-          <i data-lucide="megaphone"></i> Pamerkan Karyaku!</button>
+          <i class="ph-duotone ph-megaphone"></i> Pamerkan Karyaku!</button>
       </div>
     </section>
 
     <section>
-      <h3 class="font-black text-slate-800 mb-3 flex items-center gap-2"><i data-lucide="gallery-horizontal-end" style="color:var(--purple)"></i> Galeri Karya</h3>
+      <h3 class="font-black text-slate-800 mb-3 flex items-center gap-2"><i class="ph-duotone ph-images" style="color:var(--purple)"></i> Galeri Karya</h3>
       <div id="pm-gallery" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
     </section>
 
@@ -53,18 +53,18 @@ export function renderPameran(container) {
     const mine = Store.get().showcases;
     if (!mine.length) {
       gallery.innerHTML = `<div class="vm-card p-6 text-center text-slate-400 font-semibold sm:col-span-2">
-        <div class="text-4xl mb-2">🖼️</div>Belum ada karya. Jadilah yang pertama memamerkan!</div>`;
+        <div class="mb-2"><i class="ph-duotone ph-image-square" style="font-size:2.5rem;color:#CBD5E1"></i></div>Belum ada karya. Jadilah yang pertama memamerkan!</div>`;
       return;
     }
     gallery.innerHTML = mine.map((s) => `
       <div class="vm-card p-5 fade-up" style="border-left:5px solid var(--purple)">
         <div class="flex items-center gap-2 mb-2">
-          <span class="text-xl">✨</span>
+          <i class="ph-duotone ph-sparkle" style="color:var(--purple);font-size:1.3rem"></i>
           <h4 class="font-black text-slate-800">${escapeHtml(s.title || 'Tanpa Judul')}</h4>
         </div>
         <p class="text-xs text-slate-500 font-bold mb-2">oleh ${escapeHtml(s.by || 'Aku')} ${s.groupName ? '· ' + escapeHtml(s.groupName) : ''}</p>
         ${s.situation ? `<p class="text-sm text-slate-600 font-semibold mb-1">${escapeHtml(s.situation)}</p>` : ''}
-        <p class="text-sm font-bold text-indigo-brand mt-2">❓ ${escapeHtml(s.problem || '')}</p>
+        <p class="text-sm font-bold text-indigo-brand mt-2 flex items-start gap-1.5"><i class="ph-duotone ph-question" style="margin-top:2px"></i> ${escapeHtml(s.problem || '')}</p>
         <details class="mt-2">
           <summary class="text-xs font-black text-emerald-700 cursor-pointer">Lihat jawaban</summary>
           <p class="text-sm text-slate-600 font-semibold mt-1">${escapeHtml(s.solution || '')}</p>
@@ -83,7 +83,7 @@ export function renderPameran(container) {
     const item = { title, situation, problem, solution, by: st.student?.name, groupName: st.student?.groupName };
     Store.addShowcase(item);
     Api.sendShowcase({ studentId: st.student?.id, ...item }); // dilihat kelompok lain via backend
-    playSound(true); celebrate(); toast('Karyamu dipamerkan! 🎉', 'ok');
+    playSound(true); celebrate(); toast('Karyamu berhasil dipamerkan!', 'ok');
     // bersihkan form
     ['#pm-title', '#pm-situ', '#pm-soal', '#pm-jawab'].forEach((s) => { el.querySelector(s).value = ''; });
     paintGallery();

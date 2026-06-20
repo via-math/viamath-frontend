@@ -34,7 +34,7 @@ const DIMENSI = [
     ],
   },
   {
-    key: 'strategis', nama: 'Memecahkan Masalah', icon: 'puzzle',
+    key: 'strategis', nama: 'Memecahkan Masalah', icon: 'puzzle-piece',
     soal: [
       { q: 'Mana yang lebih besar: 3/8 atau 5/8?',
         opt: ['5/8', '3/8', 'Sama', 'Tak bisa dibanding'], benar: 0, hint: 'Penyebut sama → pembilang lebih besar lebih besar.' },
@@ -83,7 +83,7 @@ function paintProgress(el) {
       <div class="flex-1 text-center ${i > dimIdx ? 'opacity-40' : ''}">
         <div class="w-9 h-9 mx-auto rounded-full flex items-center justify-center font-black text-white"
           style="background:${i < dimIdx ? 'var(--ok)' : i === dimIdx ? 'var(--indigo)' : '#CBD5E1'}">
-          ${i < dimIdx ? '✓' : i + 1}</div>
+          ${i < dimIdx ? '<i class="ph-bold ph-check"></i>' : i + 1}</div>
         <p class="text-[10px] font-black text-slate-500 mt-1 leading-tight">${d.nama}</p>
       </div>`).join('<div style="width:18px;height:2px;background:#E2E8F0;margin-top:18px"></div>')}
   </div>`;
@@ -97,7 +97,7 @@ function paintDimensi(el) {
   body.innerHTML = `
     <section class="vm-card p-6 fade-up">
       <h3 class="font-black text-slate-800 flex items-center gap-2 mb-4">
-        <i data-lucide="${dim.icon}" style="color:var(--indigo)"></i> ${dim.nama}
+        <i class="ph-duotone ph-${dim.icon}" style="color:var(--indigo)"></i> ${dim.nama}
       </h3>
       <div class="space-y-5">
         ${dim.soal.map((s, i) => `
@@ -107,13 +107,13 @@ function paintDimensi(el) {
               ${s.opt.map((o, j) => `
                 <button class="vm-btn vm-btn-ghost opt" data-soal="${i}" data-pick="${j}">${o}</button>`).join('')}
             </div>
-            <details class="mt-2"><summary class="text-xs font-black text-indigo-brand cursor-pointer">💡 Petunjuk</summary>
+            <details class="mt-2"><summary class="text-xs font-black text-indigo-brand cursor-pointer"><i class="ph-duotone ph-lightbulb"></i> Petunjuk</summary>
               <p class="text-xs text-slate-500 font-semibold mt-1">${s.hint}</p></details>
             <p class="soal-fb text-sm font-bold mt-2" data-soal="${i}"></p>
           </div>`).join('')}
       </div>
       <button id="dim-submit" class="vm-btn vm-btn-primary w-full mt-5" style="min-height:50px">
-        <i data-lucide="send"></i> Kirim Jawaban</button>
+        <i class="ph-duotone ph-paper-plane-tilt"></i> Kirim Jawaban</button>
     </section>`;
 
   // pilih opsi
@@ -141,8 +141,8 @@ function submitDimensi(el) {
   dim.soal.forEach((s, i) => {
     const fb = el.querySelector(`.soal-fb[data-soal="${i}"]`);
     const ok = ans[i] === s.benar;
-    if (ok) { benar++; fb.textContent = '✅ Benar!'; fb.style.color = 'var(--ok)'; }
-    else { fb.textContent = `❌ Belum tepat. Jawaban: ${s.opt[s.benar]}`; fb.style.color = 'var(--no)'; }
+    if (ok) { benar++; fb.innerHTML = '<i class="ph-duotone ph-check-circle"></i> Benar!'; fb.style.color = 'var(--ok)'; }
+    else { fb.innerHTML = `<i class="ph-duotone ph-x-circle"></i> Belum tepat. Jawaban: ${s.opt[s.benar]}`; fb.style.color = 'var(--no)'; }
     Api.saveAnswer({ studentId: sid, phase: 'asesmen', activityId: `${dim.key}-${i}`,
       questionText: s.q, answerText: s.opt[ans[i]], isCorrect: ok });
   });
@@ -178,10 +178,10 @@ function finishAsesmen(el) {
   celebrate(); playSound(true);
   el.querySelector('#dim-body').innerHTML = `
     <section class="vm-card p-8 text-center fade-up" style="background:linear-gradient(135deg,#ECFDF5,#fff)">
-      <div class="text-6xl pop mb-2">🏆</div>
+      <div class="pop mb-2"><i class="ph-duotone ph-trophy" style="font-size:4rem;color:var(--yellow)"></i></div>
       <h3 class="text-2xl font-black text-slate-800">Asesmen Selesai!</h3>
       <p class="text-slate-600 font-semibold mt-1">Kerja bagus, ${st.student?.name || 'Sobat'}! Kamu sudah melewati semua dimensi.</p>
-      <button id="go-refleksi" class="vm-btn vm-btn-primary mt-5"><i data-lucide="heart"></i> Lanjut ke Renungan</button>
+      <button id="go-refleksi" class="vm-btn vm-btn-primary mt-5"><i class="ph-duotone ph-heart"></i> Lanjut ke Renungan</button>
     </section>`;
   el.querySelector('#go-refleksi').addEventListener('click', () => Router.go('refleksi'));
   setTimeout(renderIcons, 0);

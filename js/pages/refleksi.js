@@ -15,10 +15,10 @@ const PERTANYAAN = [
 ];
 
 const SKALA = [
-  { e: '😟', label: 'Belum paham' },
-  { e: '😐', label: 'Sedikit paham' },
-  { e: '🙂', label: 'Paham' },
-  { e: '😄', label: 'Sangat paham' },
+  { icon: 'smiley-sad',     warna: '#FB7185', label: 'Belum paham' },
+  { icon: 'smiley-meh',     warna: '#FBBF24', label: 'Sedikit paham' },
+  { icon: 'smiley',         warna: '#34D399', label: 'Paham' },
+  { icon: 'smiley-wink',    warna: '#10B981', label: 'Sangat paham' },
 ];
 
 const PERNYATAAN = [
@@ -45,7 +45,7 @@ export function renderRefleksi(container) {
     </section>
 
     <section class="vm-card p-6">
-      <h3 class="font-black text-slate-800 mb-4 flex items-center gap-2"><i data-lucide="smile" style="color:var(--purple)"></i> Penilaian Diri</h3>
+      <h3 class="font-black text-slate-800 mb-4 flex items-center gap-2"><i class="ph-duotone ph-smiley" style="color:var(--purple)"></i> Penilaian Diri</h3>
       <div class="space-y-4">
         ${PERNYATAAN.map((p, i) => `
           <div class="vm-card p-4" style="box-shadow:none;background:#F8FAFC">
@@ -54,7 +54,7 @@ export function renderRefleksi(container) {
               ${SKALA.map((s, j) => `
                 <button class="self-btn vm-btn vm-btn-ghost" data-p="${i}" data-v="${j + 1}" title="${s.label}"
                   style="flex-direction:column;min-height:64px;min-width:64px">
-                  <span style="font-size:1.6rem">${s.e}</span>
+                  <i class="ph-duotone ph-${s.icon}" style="font-size:1.8rem;color:${s.warna}"></i>
                   <span style="font-size:.6rem">${s.label}</span></button>`).join('')}
             </div>
           </div>`).join('')}
@@ -64,7 +64,7 @@ export function renderRefleksi(container) {
     <div id="ref-finish"></div>
 
     <section class="vm-card p-7 text-center" style="background:linear-gradient(135deg,#EEF2FF,#FAF5FF)">
-      <div class="text-5xl mb-2">🎉</div>
+      <div class="mb-2"><i class="ph-duotone ph-confetti" style="font-size:3.2rem;color:var(--purple)"></i></div>
       <h3 class="text-xl font-black text-slate-800">Selamat, Penjelajah Pecahan!</h3>
       <p class="text-slate-600 font-semibold mt-1">Kamu telah menuntaskan seluruh Petualangan Pecahan. Teruslah menemukan pecahan di sekitarmu!</p>
     </section>`;

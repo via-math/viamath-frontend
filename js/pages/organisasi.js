@@ -7,10 +7,10 @@ import { pageHeader, mascotNote, finishButton, wireFinish } from '../components/
 import { renderIcons, toast } from '../components/toast.js';
 
 const KOTAK = [
-  { id: 'tahu', icon: 'search', warna: 'var(--indigo)', label: 'Apa yang sudah kita ketahui?', hint: 'Tulis angka & fakta dari cerita.' },
-  { id: 'tanya', icon: 'help-circle', warna: 'var(--purple)', label: 'Apa yang ditanyakan?', hint: 'Apa yang harus kita cari?' },
+  { id: 'tahu', icon: 'magnifying-glass', warna: 'var(--indigo)', label: 'Apa yang sudah kita ketahui?', hint: 'Tulis angka & fakta dari cerita.' },
+  { id: 'tanya', icon: 'question', warna: 'var(--purple)', label: 'Apa yang ditanyakan?', hint: 'Apa yang harus kita cari?' },
   { id: 'penting', icon: 'lightbulb', warna: '#0D9488', label: 'Informasi paling penting?', hint: 'Bagian mana yang jadi kunci?' },
-  { id: 'cara', icon: 'route', warna: '#D97706', label: 'Rencana cara menyelesaikan?', hint: 'Langkah apa yang akan dicoba?' },
+  { id: 'cara', icon: 'path', warna: '#D97706', label: 'Rencana cara menyelesaikan?', hint: 'Langkah apa yang akan dicoba?' },
 ];
 
 export function renderOrganisasi(container) {
@@ -25,19 +25,19 @@ export function renderOrganisasi(container) {
 
     <section class="vm-card p-6">
       <h3 class="font-black text-slate-800 flex items-center gap-2 mb-3">
-        <i data-lucide="users" style="color:var(--purple)"></i> Anggota Tim
+        <i class="ph-duotone ph-users" style="color:var(--purple)"></i> Anggota Tim
         ${st.student?.groupName ? `<span class="vm-chip ml-1" style="background:#F3E8FF;color:#7C3AED">${st.student.groupName}</span>` : ''}
       </h3>
       <div id="members" class="space-y-2"></div>
       <button id="add-member" class="vm-btn vm-btn-ghost mt-3" style="min-height:40px">
-        <i data-lucide="plus"></i> Tambah Anggota</button>
+        <i class="ph-duotone ph-plus"></i> Tambah Anggota</button>
     </section>
 
     <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       ${KOTAK.map((k) => `
         <div class="vm-card p-4">
           <p class="font-black text-sm mb-2 flex items-center gap-2" style="color:${k.warna}">
-            <i data-lucide="${k.icon}" style="width:18px;height:18px"></i> ${k.label}</p>
+            <i class="ph-duotone ph-${k.icon}"></i> ${k.label}</p>
           <textarea data-pahami="${k.id}" class="vm-textarea" placeholder="${k.hint}">${Store.getAnswer('organisasi-' + k.id)}</textarea>
         </div>`).join('')}
     </section>
@@ -50,7 +50,7 @@ export function renderOrganisasi(container) {
     const row = document.createElement('div');
     row.className = 'flex gap-2 items-center';
     row.innerHTML = `<input class="vm-input member-input" placeholder="Nama anggota..." value="${value}">
-      <button class="vm-btn vm-btn-ghost del" style="min-height:44px;padding:0 .7rem" aria-label="Hapus"><i data-lucide="trash-2"></i></button>`;
+      <button class="vm-btn vm-btn-ghost del" style="min-height:44px;padding:0 .7rem" aria-label="Hapus"><i class="ph-duotone ph-trash"></i></button>`;
     row.querySelector('.del').addEventListener('click', () => { row.remove(); });
     box.appendChild(row);
     renderIcons();

@@ -25,7 +25,7 @@ export function renderHome(container) {
     <!-- Hero -->
     <section class="vm-card overflow-hidden relative p-7 md:p-9"
       style="background:linear-gradient(135deg,#EEF2FF,#FAF5FF 60%,#fff)">
-      <div class="absolute right-4 bottom-2 text-[8rem] md:text-[10rem] floaty opacity-20 pointer-events-none select-none" aria-hidden="true">🦉</div>
+      <div class="absolute right-4 bottom-2 floaty opacity-20 pointer-events-none select-none" aria-hidden="true"><i class="ph-duotone ph-bird" style="font-size:9rem;color:var(--indigo)"></i></div>
       <div class="relative z-10 max-w-lg">
         <span class="vm-chip" style="background:#fff;color:var(--indigo);box-shadow:var(--shadow-card)">
           <span style="width:8px;height:8px;border-radius:9px;background:var(--indigo);display:inline-block"></span>
@@ -35,14 +35,14 @@ export function renderHome(container) {
           Selamat datang, <span style="background:linear-gradient(135deg,var(--indigo),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent">${st.student ? st.student.name : 'Sobat Pintar'}!</span>
         </h2>
         <p class="text-slate-600 font-semibold mt-2">Ayo belajar pecahan lewat cerita seru, menyelidiki bersama tim, dan memamerkan hasil temuanmu.</p>
-        <button id="home-start" class="vm-btn vm-btn-primary mt-5"><i data-lucide="rocket"></i> Mulai Petualangan</button>
+        <button id="home-start" class="vm-btn vm-btn-primary mt-5"><i class="ph-duotone ph-rocket-launch"></i> Mulai Petualangan</button>
       </div>
     </section>
 
     <!-- Peta petualangan -->
     <section>
       <h3 class="text-lg font-black text-slate-800 mb-3 flex items-center gap-2">
-        <i data-lucide="map" style="color:var(--indigo)"></i> Peta Petualanganmu
+        <i class="ph-duotone ph-map-trifold" style="color:var(--indigo)"></i> Peta Petualanganmu
       </h3>
       <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
         ${PETUALANGAN.map((s, i) => {
@@ -53,7 +53,7 @@ export function renderHome(container) {
             <div class="flex items-center justify-between">
               <div class="w-10 h-10 rounded-xl flex items-center justify-center"
                 style="background:${done ? 'rgba(16,185,129,.12)' : 'rgba(91,141,239,.1)'}">
-                <i data-lucide="${done ? 'check' : s.icon}" style="color:${done ? 'var(--ok)' : 'var(--indigo)'}"></i>
+                <i class="ph-duotone ph-${done ? 'check' : s.icon}" style="color:${done ? 'var(--ok)' : 'var(--indigo)'}"></i>
               </div>
               <span class="text-[10px] font-black tracking-widest text-slate-400">LANGKAH ${i + 1}</span>
             </div>
@@ -68,13 +68,13 @@ export function renderHome(container) {
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <section class="vm-card p-6">
         <h3 class="font-black text-slate-800 flex items-center gap-2 mb-4 pb-3 border-b border-slate-100">
-          <i data-lucide="target" style="color:var(--indigo)"></i> Tujuan Belajar
+          <i class="ph-duotone ph-target" style="color:var(--indigo)"></i> Tujuan Belajar
         </h3>
         <ul class="space-y-3">
           ${TUJUAN.map((t) => `
             <li class="flex items-start gap-3 text-sm text-slate-600 font-semibold">
               <span style="width:22px;height:22px;border-radius:8px;background:rgba(16,185,129,.12);color:var(--ok);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">
-                <i data-lucide="check" style="width:15px;height:15px"></i></span>
+                <i class="ph-duotone ph-check" style="width:15px;height:15px"></i></span>
               ${t}
             </li>`).join('')}
         </ul>
@@ -82,7 +82,7 @@ export function renderHome(container) {
 
       <section class="vm-card p-6">
         <h3 class="font-black text-slate-800 flex items-center gap-2 mb-4 pb-3 border-b border-slate-100">
-          <i data-lucide="bar-chart-3" style="color:var(--purple)"></i> Kemajuanmu
+          <i class="ph-duotone ph-chart-bar" style="color:var(--purple)"></i> Kemajuanmu
         </h3>
         <div class="flex items-center justify-between mb-2">
           <span class="text-sm font-bold text-slate-500">Progres belajar</span>

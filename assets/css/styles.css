@@ -114,7 +114,11 @@ body .text-3xl { font-size: 32px   !important; }
 .nav-item:hover { background: #F1F5F9; }
 .nav-item.active { background: linear-gradient(135deg, var(--indigo), var(--purple)); color: #fff; box-shadow: var(--shadow-soft); }
 .nav-item.locked { opacity: .45; cursor: not-allowed; }
-.nav-item .lucide { width: 20px; height: 20px; }
+.nav-item i[class*="ph-"] { font-size: 22px; }
+
+/* Ukuran ikon Phosphor default (bisa di-override inline via font-size) */
+i[class*="ph-"] { font-size: 1.15em; vertical-align: -0.15em; }
+.vm-btn i[class*="ph-"] { font-size: 1.2em; }
 
 /* ---- Animasi (hormati reduced-motion) ---- */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }

@@ -10,7 +10,7 @@ export function pageHeader(icon, title, subtitle) {
     <div class="mb-5">
       <h2 class="text-2xl font-black text-slate-800 flex items-center gap-2.5">
         <span style="width:42px;height:42px;border-radius:14px;background:rgba(91,141,239,.1);display:inline-flex;align-items:center;justify-content:center">
-          <i data-lucide="${icon}" style="color:var(--indigo)"></i></span>
+          <i class="ph-duotone ph-${icon}" style="color:var(--indigo)"></i></span>
         ${title}
       </h2>
       ${subtitle ? `<p class="text-slate-500 font-semibold mt-1.5 ml-1">${subtitle}</p>` : ''}
@@ -21,7 +21,7 @@ export function pageHeader(icon, title, subtitle) {
 export function mascotNote(text) {
   return `
     <div class="vm-card p-4 flex items-start gap-3" style="background:linear-gradient(135deg,#EEF2FF,#fff)">
-      <div class="text-3xl floaty shrink-0" aria-hidden="true">🦉</div>
+      <div class="floaty shrink-0" aria-hidden="true"><i class="ph-duotone ph-bird" style="font-size:2.2rem;color:var(--indigo)"></i></div>
       <p class="text-sm text-slate-600 font-semibold italic leading-relaxed pt-1">${text}</p>
     </div>`;
 }
@@ -30,7 +30,7 @@ export function mascotNote(text) {
 // Pasang via wireFinish(container, ...).
 export function finishButton(label = 'Selesai & Lanjut') {
   return `<button data-finish class="vm-btn vm-btn-primary w-full" style="min-height:52px">
-    <i data-lucide="check-circle-2"></i> ${label}</button>`;
+    <i class="ph-duotone ph-check-circle"></i> ${label}</button>`;
 }
 
 export function wireFinish(container, { stepId, score = 10, badge = null, nextStep, validate } = {}) {
@@ -43,7 +43,7 @@ export function wireFinish(container, { stepId, score = 10, badge = null, nextSt
     if (badge) Store.addBadge(badge);
     playSound(true);
     celebrate();
-    toast('Hebat! Langkah selesai 🎉', 'ok');
+    toast('Hebat! Langkah ini selesai', 'ok');
     if (nextStep) setTimeout(() => Router.go(nextStep), 900);
   });
 }
