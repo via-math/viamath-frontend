@@ -5,6 +5,7 @@ import { Store } from './store.js';
 import { Api } from './api.js';
 import { Router } from './router.js';
 import { renderIcons } from './components/toast.js';
+import { confirmDialog } from './components/page-kit.js';
 
 import { renderOnboarding } from './pages/onboarding.js';
 import { renderHome } from './pages/home.js';
@@ -48,17 +49,22 @@ window.vmToggleSidebar = toggleSidebar;
 // ---- Keluar / ganti pemain ----
 // Bukan "logout" berpassword: membersihkan identitas & progres DI PERANGKAT INI, lalu kembali
 // ke layar awal. Data yang sudah terkirim ke guru/peneliti TIDAK terhapus (sudah di server).
-function logout() {
-  const ok = window.confirm(
-    'Yakin mau keluar?\n\nKamu akan kembali ke layar awal, dan perangkat ini siap untuk pemain lain. ' +
-    'Progres di perangkat ini akan dimulai dari awal.'
-  );
+async function logout() {
+  closeSidebar();
+  const ok = await confirmDialog({
+    title: 'Mau keluar?',
+    message: 'Kamu akan kembali ke layar awal, dan perangkat ini siap untuk pemain lain. ' +
+      'Progres di perangkat ini dimulai dari awal.',
+    confirmText: 'Ya, keluar',
+    cancelText: 'Batal',
+    icon: 'sign-out',
+    danger: true,
+  });
   if (!ok) return;
   Api.flush();          // pastikan antrean tersinkron dulu (best-effort)
   Store.reset();        // bersihkan state lokal
   location.hash = '';   // kembali ke awal
   document.getElementById('vm-shell').classList.add('hidden');
-  closeSidebar();
   launchOnboarding();   // tampilkan layar "Kenalan dulu" lagi
 }
 window.vmLogout = logout;
