@@ -187,7 +187,9 @@ const AKTIVITAS = [
     id: 'a1', judul: 'Penyelidikan 1: Mengenal Bagian', pengayaan: false,
     masalah: 'Bu Via membawa kue yang dipotong berbeda-beda: Kue A jadi 4 bagian, Kue B jadi 2 bagian, Kue C jadi 8 bagian. Ina mengambil 1 bagian dari tiap kue.',
     soal: [
-      { t: 'Tulis pecahan bagian Ina dari Kue A, B, dan C!', jawab: ['1/4', '1/2', '1/8'] },
+      { t: 'Pecahan bagian Ina dari Kue A (dipotong 4 bagian)?', jawab: ['1/4'] },
+      { t: 'Pecahan bagian Ina dari Kue B (dipotong 2 bagian)?', jawab: ['1/2'] },
+      { t: 'Pecahan bagian Ina dari Kue C (dipotong 8 bagian)?', jawab: ['1/8'] },
       { t: 'Jika Ina mengambil 3 bagian dari Kue C, berapa pecahannya?', jawab: ['3/8'] },
     ],
   },
