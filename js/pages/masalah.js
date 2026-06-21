@@ -80,10 +80,13 @@ export function renderMasalah(container) {
         <!-- pertanyaan pemantik -->
         <div class="mt-6 p-5 rounded-2xl" style="background:#EEF2FF">
           <p class="font-black text-indigo-brand mb-2 flex items-center gap-2"><i class="ph-duotone ph-question"></i> Ayo Pikirkan</p>
-          <ol class="list-decimal list-inside space-y-1.5 text-sm text-slate-700 font-semibold">
-            ${c.tanya.map((t) => `<li>${t}</li>`).join('')}
-          </ol>
-          <textarea id="jawab-cerita" class="vm-textarea mt-3" placeholder="Tulis jawabanmu di sini..."></textarea>
+          <div class="space-y-3">
+            ${c.tanya.map((t, i) => `
+              <div>
+                <label class="block text-sm text-slate-700 font-semibold mb-1">${i + 1}. ${t}</label>
+                <textarea data-q="${i}" rows="2" class="vm-textarea" placeholder="Tulis jawabanmu di sini..."></textarea>
+              </div>`).join('')}
+          </div>
           <button id="cek-cerita" class="vm-btn vm-btn-ghost mt-3"><i class="ph-duotone ph-eye"></i> Lihat Petunjuk Jawaban</button>
         </div>
 
@@ -99,11 +102,15 @@ export function renderMasalah(container) {
       </div>`;
 
     box.querySelector('#cek-cerita').addEventListener('click', () => {
-      const val = box.querySelector('#jawab-cerita').value.trim();
-      if (val.length < 3) { toast('Tulis dulu jawabanmu ya, baru lihat petunjuk!', 'no'); return; }
-      Store.saveAnswer(`masalah-cerita-${aktif}`, val);
-      Api.saveAnswer({ studentId: Store.get().student?.id, phase: 'masalah',
-        activityId: `cerita-${aktif}`, questionText: CERITA[aktif].judul, answerText: val });
+      const inputs = [...box.querySelectorAll('[data-q]')];
+      const vals = inputs.map((t) => t.value.trim());
+      if (vals.some((v) => v.length < 1)) { toast('Jawab semua pertanyaan dulu ya, baru lihat petunjuk!', 'no'); return; }
+      const sid = Store.get().student?.id;
+      vals.forEach((v, i) => {
+        Store.saveAnswer(`masalah-cerita-${aktif}-q${i + 1}`, v);
+        Api.saveAnswer({ studentId: sid, phase: 'masalah',
+          activityId: `cerita-${aktif}-q${i + 1}`, questionText: CERITA[aktif].tanya[i], answerText: v });
+      });
       box.querySelector('#kunci-box').classList.remove('hidden');
       box.querySelector('#kunci-box').classList.add('pop');
     });
