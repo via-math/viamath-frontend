@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>ViaMath — Dashboard Peneliti</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%235B8DEF'/%3E%3Ctext x='50' y='70' font-size='60' font-family='Nunito,sans-serif' font-weight='900' fill='white' text-anchor='middle'%3E%CF%80%3C/text%3E%3C/svg%3E" />
+
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        fontFamily: { nunito: ['Nunito', 'sans-serif'] },
+        colors: { indigo: { brand: '#5B8DEF' }, purple: { brand: '#A78BFA' } },
+      } },
+    };
+  </script>
+</head>
+<body class="h-full" style="background:var(--bg)">
+  <div id="admin-root" class="min-h-full"></div>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
