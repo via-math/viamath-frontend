@@ -3,7 +3,7 @@
 
 export const CONFIG = {
   // Backend Go @ GCF. Kosongkan ('') untuk mode offline-only (frontend tetap jalan penuh).
-  BASE_URL: '', // mis. 'https://asia-southeast2-PROJECT.cloudfunctions.net/viamath'
+  BASE_URL: 'https://asia-southeast2-viamath.cloudfunctions.net/viamath',
 
   APP_NAME: 'ViaMath',
   APP_TAGLINE: 'Petualangan Pecahan',
