@@ -16,6 +16,15 @@ const TABS = [
   { id: 'showcases', label: 'Karya', coll: 'showcases', icon: 'images' },
 ];
 
+// Urutan & label fase (label siswa) untuk pengelompokan jawaban per siswa.
+const PHASE_ORDER = [
+  { key: 'masalah', label: 'Tantangan Cerita' },
+  { key: 'organisasi', label: 'Bentuk Tim' },
+  { key: 'penyelidikan', label: 'Mari Selidiki' },
+  { key: 'asesmen', label: 'Uji Kemampuan' },
+  { key: 'refleksi', label: 'Renungkan' },
+];
+
 const state = {
   pin: sessionStorage.getItem(PIN_KEY) || '',
   data: { students: [], answers: [], assessments: [], showcases: [] },
@@ -23,6 +32,7 @@ const state = {
   tab: 'students',
   classFilter: '',
   studentFilter: '',
+  detailStudent: null,
   anonymize: false,
   error: '',
 };
@@ -207,6 +217,7 @@ function renderGate(msg) {
 
 // ─────────────────────── Render: dashboard ───────────────────────
 function renderDash() {
+  if (state.detailStudent) { renderDetail(state.detailStudent); return; }
   const c = { students: state.data.students.length, answers: state.data.answers.length,
     assessments: state.data.assessments.length, showcases: state.data.showcases.length };
   const cards = [
@@ -270,7 +281,7 @@ function renderDash() {
       <div class="vm-card p-0 overflow-hidden">
         <div class="px-4 py-2.5 text-xs font-black text-slate-500 border-b border-slate-100 flex items-center justify-between">
           <span>${rows.length} baris</span>
-          ${tab === 'students' ? '<span class="text-slate-400">klik baris untuk lihat jawabannya</span>' : ''}
+          ${tab === 'students' ? '<span class="text-slate-400">klik baris untuk lihat detail per fase</span>' : ''}
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
@@ -303,7 +314,7 @@ function renderDash() {
   if (cs) cs.addEventListener('click', () => { state.studentFilter = ''; renderDash(); });
   if (tab === 'students') {
     root.querySelectorAll('[data-sid]').forEach((tr) =>
-      tr.addEventListener('click', () => { state.studentFilter = tr.dataset.sid; state.tab = 'answers'; renderDash(); }));
+      tr.addEventListener('click', () => { state.detailStudent = tr.dataset.sid; renderDash(); }));
   }
   if (window.renderIconsFallback) window.renderIconsFallback();
 }
@@ -311,6 +322,87 @@ function renderDash() {
 function nameById(id) {
   const s = state.studentMap[id];
   return state.anonymize ? 'S-' + String(id).slice(-6) : (s ? s.name : id);
+}
+
+// Detail satu siswa: jawaban dikelompokkan per fase + asesmen + karya.
+function renderDetail(sid) {
+  const s = state.studentMap[sid] || { _id: sid };
+  const ans = (state.data.answers || []).filter((a) => a.studentId === sid)
+    .sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
+  const asmt = (state.data.assessments || []).find((a) => a.studentId === sid);
+  const works = (state.data.showcases || []).filter((w) => w.studentId === sid);
+  const nm = state.anonymize ? 'S-' + String(sid).slice(-6) : (s.name || '(tanpa nama)');
+  const sch = state.anonymize ? '' : (s.school || '');
+
+  const known = new Set(PHASE_ORDER.map((p) => p.key));
+  const groups = PHASE_ORDER.map((p) => ({ ...p, items: ans.filter((a) => a.phase === p.key) }));
+  const others = ans.filter((a) => !known.has(a.phase));
+  if (others.length) groups.push({ key: 'lainnya', label: 'Lainnya', items: others });
+
+  const answerRow = (a) => `
+    <div class="px-4 py-3">
+      <div class="flex items-start justify-between gap-3">
+        <p class="text-sm font-bold text-slate-700">${esc(a.questionText || a.activityId || '(tanpa teks)')}</p>
+        ${a.isCorrect == null ? '' : `<span class="vm-chip shrink-0" style="background:${a.isCorrect ? '#DCFCE7;color:#15803D' : '#FEE2E2;color:#B91C1C'}">${a.isCorrect ? 'benar' : 'salah'}</span>`}
+      </div>
+      <p class="text-sm text-slate-600 mt-1"><span class="text-slate-400 font-bold">Jawab:</span> ${esc(a.answerText || '—')}</p>
+      <p class="text-[11px] text-slate-400 font-semibold mt-1">${esc(a.activityId || '')} · ${esc(fmtDate(a.createdAt))}</p>
+    </div>`;
+
+  root.innerHTML = `
+    <div class="max-w-4xl mx-auto px-4 py-5">
+      <button id="back" class="vm-btn vm-btn-ghost mb-4" style="min-height:40px"><i class="ph-duotone ph-arrow-left"></i> Kembali ke daftar</button>
+
+      <div class="vm-card p-5 mb-4">
+        <div class="flex items-center justify-between gap-3 flex-wrap">
+          <div>
+            <h2 class="text-xl font-black text-slate-800">${esc(nm)}</h2>
+            <p class="text-sm text-slate-500 font-semibold">${esc([sch, s.className, s.groupName].filter(Boolean).join(' · '))}
+              ${s.classCode ? `<span class="vm-chip ml-1" style="background:#EEF2FF;color:#4F46E5">${esc(s.classCode)}</span>` : ''}</p>
+          </div>
+          <div class="text-right">
+            <div class="text-xs font-black text-slate-400">JAWABAN</div>
+            <div class="text-2xl font-black text-slate-800">${ans.length}</div>
+          </div>
+        </div>
+      </div>
+
+      ${groups.map((g) => {
+        const benar = g.items.filter((a) => a.isCorrect === true).length;
+        const adaNilai = g.items.some((a) => a.isCorrect != null);
+        return `
+        <div class="vm-card p-0 mb-3 overflow-hidden">
+          <div class="px-4 py-3 flex items-center justify-between gap-2 border-b border-slate-100" style="background:#F8FAFC">
+            <div class="font-black text-slate-800 flex items-center gap-2"><i class="ph-duotone ph-flag" style="color:var(--indigo)"></i> ${esc(g.label)}
+              <span class="text-xs font-bold text-slate-400">(${esc(g.key)})</span></div>
+            <div class="text-xs font-black text-slate-500">${g.items.length} jawaban${adaNilai ? ` · ${benar} benar` : ''}</div>
+          </div>
+          ${g.items.length === 0
+            ? `<div class="px-4 py-3 text-sm text-slate-400 font-semibold">Belum ada jawaban di fase ini.</div>`
+            : `<div class="divide-y divide-slate-50">${g.items.map(answerRow).join('')}</div>`}
+        </div>`;
+      }).join('')}
+
+      ${asmt ? `
+        <div class="vm-card p-4 mb-3">
+          <div class="font-black text-slate-800 flex items-center gap-2 mb-1"><i class="ph-duotone ph-exam" style="color:#0D9488"></i> Hasil Asesmen</div>
+          <p class="text-sm text-slate-600 font-semibold">Skor total: <b>${esc(asmt.totalScore)}</b> · ${esc(fmtDate(asmt.submittedAt))}</p>
+          ${asmt.dimensions ? `<pre class="text-xs text-slate-500 mt-2 overflow-x-auto">${esc(JSON.stringify(asmt.dimensions, null, 2))}</pre>` : ''}
+        </div>` : ''}
+
+      ${works.length ? `
+        <div class="vm-card p-4">
+          <div class="font-black text-slate-800 flex items-center gap-2 mb-2"><i class="ph-duotone ph-images" style="color:#D97706"></i> Karya (${works.length})</div>
+          ${works.map((w) => `<div class="p-3 rounded-xl mb-2" style="background:#FFF7ED">
+            <p class="font-black text-slate-700 text-sm">${esc(w.title || '(tanpa judul)')}</p>
+            ${w.situation ? `<p class="text-sm text-slate-600 mt-0.5">${esc(w.situation)}</p>` : ''}
+            <p class="text-sm text-slate-700 mt-1"><b>Soal:</b> ${esc(w.problem || '')}</p>
+            <p class="text-sm text-slate-600"><b>Jawaban:</b> ${esc(w.solution || '')}</p>
+          </div>`).join('')}
+        </div>` : ''}
+    </div>`;
+
+  root.querySelector('#back').addEventListener('click', () => { state.detailStudent = null; renderDash(); });
 }
 
 function renderLoading() {
