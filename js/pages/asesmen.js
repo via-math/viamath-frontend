@@ -27,7 +27,7 @@ const DIMENSI = [
     soal: [
       { q: 'Pecahan mana yang senilai dengan 1/2?',
         opt: ['2/4', '1/3', '2/5', '3/4'], benar: 0, hint: '1/2 = (1×2)/(2×2) = 2/4.' },
-      { q: 'Hitung 2/8 + 3/8 = ... (penyebut sama)',
+      { q: 'Hitung 2/8 + 3/8 = ...',
         opt: ['5/8', '5/16', '6/8', '1/8'], benar: 0, hint: 'Penyebut sama → jumlahkan pembilang: 2+3=5.' },
       { q: 'Hitung 5/6 − 2/6 = ...',
         opt: ['3/6', '3/12', '7/6', '2/6'], benar: 0, hint: 'Penyebut sama → kurangkan pembilang: 5−2=3.' },
