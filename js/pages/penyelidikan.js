@@ -197,22 +197,22 @@ const AKTIVITAS = [
     id: 'a2', judul: 'Penyelidikan 2: Membandingkan', pengayaan: false,
     masalah: 'Ani mendapat 1/2 bagian roti, dan Doni mendapat 2/4 bagian roti yang sama besar.',
     soal: [
-      { t: 'Siapa yang mendapat lebih banyak? (tulis "sama" jika sama)', jawab: ['sama', '1/2', '2/4'] },
-      { t: 'Tulis pecahan yang senilai dengan 1/2 (selain 2/4)!', jawab: ['3/6', '4/8', '2/4'] },
+      { t: 'Siapa yang mendapat lebih banyak, Ani atau Doni?', jawab: ['sama', '1/2', '2/4'] },
+      { t: 'Tulis pecahan yang senilai dengan 1/2!', jawab: ['3/6', '4/8', '2/4'] },
     ],
   },
   {
     id: 'a3', judul: 'Penyelidikan 3: Menjumlah Pecahan', pengayaan: false,
     masalah: 'Rara makan 2/8 pizza, lalu makan 1/8 pizza lagi dari loyang yang sama.',
     soal: [
-      { t: 'Berapa total pizza yang dimakan Rara? (penyebut sama)', jawab: ['3/8'] },
+      { t: 'Berapa total pizza yang dimakan Rara?', jawab: ['3/8'] },
     ],
   },
   {
     id: 'a4', judul: 'Penyelidikan 4: Tantangan Pengayaan', pengayaan: true,
     masalah: 'Pak Ahmad punya pita 3/4 meter, dipotong-potong sepanjang 1/8 meter.',
     soal: [
-      { t: 'Berapa banyak potongan 1/8 meter dari pita 3/4 meter? (Petunjuk: 3/4 ÷ 1/8)', jawab: ['6'] },
+      { t: 'Berapa banyak potongan 1/8 meter dari pita 3/4 meter?', jawab: ['6'] },
     ],
   },
 ];
