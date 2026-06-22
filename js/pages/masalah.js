@@ -3,7 +3,7 @@
 
 import { Store } from '../store.js';
 import { Api } from '../api.js';
-import { foodFraction, fracHTML } from '../components/fraction-circle.js';
+import { foodFraction, pizzaArtFraction, fracHTML } from '../components/fraction-circle.js';
 import { pageHeader, mascotNote, problemBanner, finishButton, wireFinish } from '../components/page-kit.js';
 import { renderIcons, toast } from '../components/toast.js';
 
@@ -65,7 +65,7 @@ export function renderMasalah(container) {
         <p class="text-slate-600 font-semibold leading-relaxed">${c.teks}</p>
 
         <div class="my-6 flex flex-col items-center">
-          ${foodFraction(c.filled, c.total, 190, c.img === 'pizza' ? 'pizza' : 'cake')}
+          ${c.img === 'pizza' ? pizzaArtFraction(c.filled, c.total, 190) : foodFraction(c.filled, c.total, 190, 'cake')}
           <p class="text-xs font-bold text-slate-500 mt-3">${c.total} potongan sama besar</p>
         </div>
 
