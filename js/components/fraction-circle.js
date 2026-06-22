@@ -50,6 +50,11 @@ export function foodFraction(filled, total, size = 150, kind = 'pizza') {
       tops: [[0.58, 0, 0.10, '#E11D48', null], [0.42, 0.26, 0.05, '#60A5FA', null],
              [0.50, -0.28, 0.05, '#FBBF24', null], [0.32, 0.10, 0.045, '#34D399', null]],
     },
+    melon: { // semangka: kulit hijau, daging merah, biji hitam
+      rim: '#3FA34D', rimInner: '#ECFDF5', g0: '#FCA5A5', g1: '#EF4444', empty: '#F1F5F9',
+      tops: [[0.62, 0.05, 0.05, '#1F2937', null], [0.44, -0.28, 0.045, '#1F2937', null],
+             [0.50, 0.30, 0.045, '#1F2937', null], [0.30, 0.12, 0.04, '#1F2937', null]],
+    },
   };
   const S = styles[kind] || styles.pizza;
   const parts = [
@@ -88,6 +93,24 @@ export function foodFraction(filled, total, size = 150, kind = 'pizza') {
 // Alias pizza (kompatibilitas pemakaian lama, mis. inkuiri penyelidikan).
 export function pizzaFraction(filled, total, size = 150) {
   return foodFraction(filled, total, size, 'pizza');
+}
+
+// Bar cokelat: papan cokelat (grid kotak) yang terbagi `total`, `filled` kotak
+// "terisi" (cokelat) dan sisanya pucat — model pecahan berbentuk bar.
+export function chocoBar(filled, total, size = 64) {
+  const rows = (total % 2 === 0 && total > 3) ? 2 : 1;
+  const cols = Math.ceil(total / rows);
+  const gap = 2, pad = 4;
+  const cell = (size - pad * 2 - gap * (cols - 1)) / cols;
+  const w = size, h = pad * 2 + rows * cell + gap * (rows - 1);
+  let sq = '';
+  for (let i = 0; i < total; i++) {
+    const x = pad + (i % cols) * (cell + gap), y = pad + Math.floor(i / cols) * (cell + gap);
+    const on = i < filled;
+    sq += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${cell.toFixed(1)}" height="${cell.toFixed(1)}" rx="${(cell * 0.16).toFixed(1)}" fill="${on ? '#7B4B27' : '#E7D7C8'}"/>`;
+    if (on) sq += `<rect x="${(x + cell * 0.14).toFixed(1)}" y="${(y + cell * 0.14).toFixed(1)}" width="${(cell * 0.42).toFixed(1)}" height="${(cell * 0.42).toFixed(1)}" rx="${(cell * 0.1).toFixed(1)}" fill="#9C6B43"/>`;
+  }
+  return `<svg width="${w}" height="${h.toFixed(1)}" viewBox="0 0 ${w} ${h.toFixed(1)}" role="img" aria-label="cokelat ${filled} dari ${total}"><rect x="1" y="1" width="${w - 2}" height="${(h - 2).toFixed(1)}" rx="6" fill="#5A3418"/>${sq}</svg>`;
 }
 
 // Bar model: deretan kotak, `filled` dari `total` terisi.
