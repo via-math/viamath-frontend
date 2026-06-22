@@ -4,7 +4,7 @@
 
 import { Store } from '../store.js';
 import { Api } from '../api.js';
-import { fractionCircle, fracHTML, interactiveBar, barModel } from '../components/fraction-circle.js';
+import { fractionCircle, pizzaFraction, fracHTML, interactiveBar, barModel } from '../components/fraction-circle.js';
 import { checkAnswer } from '../components/fraction-math.js';
 import { pageHeader, mascotNote, problemBanner } from '../components/page-kit.js';
 import { renderIcons, toast, playSound, celebrate } from '../components/toast.js';
@@ -64,9 +64,9 @@ function renderMateri() {
       </div>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">
-      ${[['pizza', 3, 8, 'Pizza'], ['orange-slice', 1, 2, 'Semangka'], ['cookie', 3, 8, 'Cokelat'], ['cake', 1, 4, 'Kue']].map(
+      ${[['pizza', 3, 8, 'Pizza'], ['semangka', 1, 2, 'Semangka'], ['cokelat', 3, 8, 'Cokelat'], ['kue', 1, 4, 'Kue']].map(
         ([ic, a, b, nama]) => `<div class="vm-card p-3 text-center" style="box-shadow:none">
-          <div><i class="ph-duotone ph-${ic}" style="font-size:2rem;color:var(--peach)"></i></div>${fracHTML(a, b)}<p class="text-xs text-slate-500 font-bold mt-1">${nama}</p></div>`
+          <div><img src="img/${ic}.svg" alt="${nama}" style="width:2.4rem;height:2.4rem" loading="lazy"></div>${fracHTML(a, b)}<p class="text-xs text-slate-500 font-bold mt-1">${nama}</p></div>`
       ).join('')}
     </div>`;
 
@@ -234,7 +234,7 @@ function renderPizzaInquiry() {
   sec.className = 'vm-card p-6';
   sec.innerHTML = `
     <div class="flex items-center gap-2 mb-1 flex-wrap">
-      <h3 class="font-black text-slate-800">🍕 Selidiki Masalah Pizza</h3>
+      <h3 class="font-black text-slate-800 flex items-center gap-1.5"><img src="img/pizza.svg" alt="" style="width:1.5rem;height:1.5rem"> Selidiki Masalah Pizza</h3>
       <span class="vm-chip" style="background:#FEF3C7;color:#B45309">Masalah utama</span>
     </div>
     <p class="text-sm text-slate-600 font-semibold p-3 rounded-xl mb-3" style="background:#FFF7ED">Pizza Rara dipotong 8 bagian. Rara &amp; 3 temannya (4 anak) masing-masing makan 2 potong. Ayo selidiki untuk menjawab masalah kita!</p>
@@ -257,7 +257,7 @@ function renderPizzaInquiry() {
     </div>
     <p class="text-sm font-bold mt-1" id="pz-fb"></p>`;
 
-  sec.querySelector('#pz-visual').append(fractionCircle(8, 8, '#FDBA74', 150));
+  sec.querySelector('#pz-visual').innerHTML = pizzaFraction(8, 8, 150);
 
   sec.querySelector('#pz-check').addEventListener('click', () => {
     const sid = Store.get().student?.id;

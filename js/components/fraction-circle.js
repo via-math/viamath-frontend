@@ -30,6 +30,41 @@ export function fractionCircle(filled, total, color = '#5B8DEF', size = 130) {
     aria-label="${filled} dari ${total} bagian">${slices.join('')}</svg>`;
 }
 
+// Pizza pecahan: lingkaran bergaya pizza (kerak + keju + topping) yang TETAP
+// terbagi `total` irisan. `filled` irisan tampil sebagai pizza, sisanya kosong.
+// Realistis untuk masalah Pizza, tapi tetap mengajarkan pecahan (bisa dibagi).
+export function pizzaFraction(filled, total, size = 150) {
+  const cx = size / 2, cy = size / 2, r = size / 2 - 4;
+  const ri = r - Math.max(6, size * 0.06); // radius keju (di dalam kerak)
+  const crust = '#e0a763', cheese = '#f6da77', empty = '#F1F5F9', pep = '#b21725', basil = '#83bf4f';
+  const parts = [`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${crust}"/>`];
+  for (let i = 0; i < total; i++) {
+    const a0 = (i / total) * 2 * Math.PI - Math.PI / 2;
+    const a1 = ((i + 1) / total) * 2 * Math.PI - Math.PI / 2;
+    const am = (a0 + a1) / 2;
+    const x0 = cx + ri * Math.cos(a0), y0 = cy + ri * Math.sin(a0);
+    const x1 = cx + ri * Math.cos(a1), y1 = cy + ri * Math.sin(a1);
+    const large = (a1 - a0) > Math.PI ? 1 : 0;
+    const d = total === 1
+      ? `M ${cx} ${cy} m -${ri},0 a ${ri},${ri} 0 1,0 ${ri * 2},0 a ${ri},${ri} 0 1,0 -${ri * 2},0`
+      : `M ${cx} ${cy} L ${x0.toFixed(1)} ${y0.toFixed(1)} A ${ri} ${ri} 0 ${large} 1 ${x1.toFixed(1)} ${y1.toFixed(1)} Z`;
+    const isPizza = i < filled;
+    parts.push(`<path d="${d}" fill="${isPizza ? cheese : empty}" stroke="#fff" stroke-width="2"/>`);
+    if (isPizza && total > 1) {
+      const pr = Math.max(3, ri * 0.09);
+      const tx = cx + ri * 0.6 * Math.cos(am), ty = cy + ri * 0.6 * Math.sin(am);
+      const bx = cx + ri * 0.34 * Math.cos(am), by = cy + ri * 0.34 * Math.sin(am);
+      parts.push(`<circle cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="${pr.toFixed(1)}" fill="${pep}"/>`);
+      parts.push(`<circle cx="${bx.toFixed(1)}" cy="${by.toFixed(1)}" r="${(pr * 0.6).toFixed(1)}" fill="${basil}"/>`);
+    }
+  }
+  if (total === 1) { // pizza utuh: sebar beberapa topping
+    [[0.5, 0], [-0.4, 0.3], [0.1, -0.45], [-0.2, -0.2], [0.35, 0.4]].forEach(([dx, dy]) =>
+      parts.push(`<circle cx="${(cx + ri * dx).toFixed(1)}" cy="${(cy + ri * dy).toFixed(1)}" r="${(ri * 0.1).toFixed(1)}" fill="${pep}"/>`));
+  }
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="pizza ${filled} dari ${total} irisan">${parts.join('')}</svg>`;
+}
+
 // Bar model: deretan kotak, `filled` dari `total` terisi.
 export function barModel(filled, total, color = '#5B8DEF') {
   let cells = '';
