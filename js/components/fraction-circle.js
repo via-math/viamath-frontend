@@ -53,11 +53,14 @@ export function foodFraction(filled, total, size = 150, kind = 'pizza') {
     const on = i < filled;
     parts.push(`<path d="${d}" fill="${on ? S.fill : S.empty}" stroke="#fff" stroke-width="2"/>`);
     if (on && total > 1) {
-      const pr = Math.max(3, ri * 0.09);
-      const tx = cx + ri * 0.6 * Math.cos(am), ty = cy + ri * 0.6 * Math.sin(am);
-      const bx = cx + ri * 0.34 * Math.cos(am), by = cy + ri * 0.34 * Math.sin(am);
-      parts.push(`<circle cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="${pr.toFixed(1)}" fill="${S.dot}"/>`);
-      parts.push(`<circle cx="${bx.toFixed(1)}" cy="${by.toFixed(1)}" r="${(pr * 0.6).toFixed(1)}" fill="${S.dot2}"/>`);
+      const sw = a1 - a0;                 // lebar sudut irisan
+      const pr = Math.max(2.5, ri * 0.085);
+      // 2 topping utama (pepperoni/ceri) + 1 hiasan kecil (basil/sprinkle), tersebar dalam irisan
+      [[0.64, 0, pr, S.dot], [0.40, -sw * 0.26, pr * 0.85, S.dot], [0.56, sw * 0.30, pr * 0.55, S.dot2]]
+        .forEach(([rf, da, rr, col]) => {
+          const ang = am + da;
+          parts.push(`<circle cx="${(cx + ri * rf * Math.cos(ang)).toFixed(1)}" cy="${(cy + ri * rf * Math.sin(ang)).toFixed(1)}" r="${rr.toFixed(1)}" fill="${col}"/>`);
+        });
     }
   }
   if (total === 1) { // utuh: sebar beberapa topping/hiasan
@@ -70,39 +73,6 @@ export function foodFraction(filled, total, size = 150, kind = 'pizza') {
 // Alias pizza (kompatibilitas pemakaian lama, mis. inkuiri penyelidikan).
 export function pizzaFraction(filled, total, size = 150) {
   return foodFraction(filled, total, size, 'pizza');
-}
-
-// Pizza dari ART ASLI: menata file img/pizza.svg (EmojiOne) menjadi lingkaran
-// utuh lalu membaginya `total` irisan. 8 salinan slice (apex ~62°) dirotasi 45°
-// saling tumpang-tindih untuk menutup disk, lalu DI-KLIP bulat + garis pembagi.
-// `filled` irisan tampak berisi pizza; sisanya ditutup polos.
-let _pzId = 0;
-export function pizzaArtFraction(filled, total, size = 160) {
-  const cx = size / 2, cy = size / 2, R = size / 2 - 4;
-  const k = R / 62;               // skala: ujung→pusat, kerak→tepi
-  const id = 'pzc' + (++_pzId);
-  // 8 salinan art untuk menutupi disk (tip di pusat, dirotasi 45°).
-  let imgs = '';
-  for (let i = 0; i < 8; i++) {
-    imgs += `<image href="img/pizza.svg" width="64" height="64" transform="rotate(${i * 45} ${cx} ${cy}) translate(${(cx - 2.3 * k).toFixed(2)} ${(cy - 62 * k).toFixed(2)}) scale(${k.toFixed(3)})"/>`;
-  }
-  // tutup irisan kosong + garis pembagi sesuai `total`
-  let covers = '', lines = '';
-  for (let i = 0; i < total; i++) {
-    const a0 = (i / total) * 2 * Math.PI - Math.PI / 2;
-    const a1 = ((i + 1) / total) * 2 * Math.PI - Math.PI / 2;
-    if (i >= filled) {
-      const x0 = cx + R * Math.cos(a0), y0 = cy + R * Math.sin(a0);
-      const x1 = cx + R * Math.cos(a1), y1 = cy + R * Math.sin(a1);
-      const large = (a1 - a0) > Math.PI ? 1 : 0;
-      covers += `<path d="M ${cx} ${cy} L ${x0.toFixed(1)} ${y0.toFixed(1)} A ${R} ${R} 0 ${large} 1 ${x1.toFixed(1)} ${y1.toFixed(1)} Z" fill="#F1F5F9"/>`;
-    }
-    lines += `<line x1="${cx}" y1="${cy}" x2="${(cx + R * Math.cos(a0)).toFixed(1)}" y2="${(cy + R * Math.sin(a0)).toFixed(1)}" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>`;
-  }
-  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="pizza ${filled} dari ${total} irisan">`
-    + `<defs><clipPath id="${id}"><circle cx="${cx}" cy="${cy}" r="${R}"/></clipPath></defs>`
-    + `<circle cx="${cx}" cy="${cy}" r="${R}" fill="#e0a763"/>`
-    + `<g clip-path="url(#${id})">${imgs}</g>${covers}${lines}</svg>`;
 }
 
 // Bar model: deretan kotak, `filled` dari `total` terisi.
