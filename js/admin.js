@@ -38,6 +38,7 @@ const state = {
   pin: sessionStorage.getItem(PIN_KEY) || '',
   data: { students: [], answers: [], assessments: [], showcases: [] },
   studentMap: {},
+  studentStats: {},
   tab: 'students',
   classFilter: '',
   studentFilter: '',
@@ -62,6 +63,11 @@ async function loadAll() {
   state.data = { students, answers, assessments, showcases };
   state.studentMap = {};
   (students || []).forEach((s) => { state.studentMap[s._id] = s; });
+  // Agregat per siswa (kolom ringkas tabel Siswa + statistik).
+  state.studentStats = {};
+  const stat = (sid) => state.studentStats[sid] || (state.studentStats[sid] = { answers: 0, correct: 0, phases: new Set(), assessment: null });
+  (answers || []).forEach((a) => { const t = stat(a.studentId); t.answers++; if (a.isCorrect === true) t.correct++; if (a.phase) t.phases.add(a.phase); });
+  (assessments || []).forEach((a) => { stat(a.studentId).assessment = a.totalScore; });
 }
 
 // ─────────────────────── Helpers ───────────────────────
@@ -107,6 +113,10 @@ function columnsFor(tab) {
       { label: 'kelas', get: (r) => r.className },
       { label: 'kodeKelas', get: (r) => r.classCode },
       { label: 'kelompok', get: (r) => r.groupName || '' },
+      { label: 'jawaban', get: (r) => (state.studentStats[r._id] || {}).answers || 0 },
+      { label: 'benar', get: (r) => (state.studentStats[r._id] || {}).correct || 0 },
+      { label: 'faseAktif', get: (r) => (((state.studentStats[r._id] || {}).phases) || new Set()).size },
+      { label: 'skorAsesmen', get: (r) => { const v = (state.studentStats[r._id] || {}).assessment; return v == null ? '' : v; } },
       { label: 'dibuat', get: (r) => fmtDate(r.createdAt) },
     ];
     case 'answers': return [
@@ -291,17 +301,19 @@ function renderDash() {
       <div class="vm-card p-0 overflow-hidden">
         <div class="px-4 py-2.5 text-xs font-black text-slate-500 border-b border-slate-100 flex items-center justify-between">
           <span>${rows.length} baris</span>
-          ${tab === 'students' ? '<span class="text-slate-400">klik baris untuk lihat detail per fase</span>' : ''}
+          ${tab === 'students' ? '<span class="text-slate-400">klik tombol Detail untuk lihat jawaban per fase</span>' : ''}
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
             <thead><tr class="text-left text-slate-500 font-black bg-slate-50">
               ${cols.map((c) => `<th class="px-3 py-2 whitespace-nowrap">${esc(c.label)}</th>`).join('')}
+              ${tab === 'students' ? '<th class="px-3 py-2"></th>' : ''}
             </tr></thead>
             <tbody>
-              ${rows.length === 0 ? `<tr><td class="px-3 py-6 text-center text-slate-400 font-semibold" colspan="${cols.length}">Belum ada data.</td></tr>`
+              ${rows.length === 0 ? `<tr><td class="px-3 py-6 text-center text-slate-400 font-semibold" colspan="${cols.length + (tab === 'students' ? 1 : 0)}">Belum ada data.</td></tr>`
                 : rows.map((r) => `<tr class="border-t border-slate-50 hover:bg-indigo-50/40 ${tab === 'students' ? 'cursor-pointer' : ''}" ${tab === 'students' ? `data-sid="${esc(r._id)}"` : ''}>
                   ${cols.map((c) => `<td class="px-3 py-2 align-top" style="max-width:320px">${esc(c.get(r))}</td>`).join('')}
+                  ${tab === 'students' ? `<td class="px-3 py-2 whitespace-nowrap"><button class="vm-btn vm-btn-ghost" data-detail="${esc(r._id)}" style="min-height:30px;padding:.15rem .6rem"><i class="ph-duotone ph-eye"></i> Detail</button></td>` : ''}
                 </tr>`).join('')}
             </tbody>
           </table>
@@ -325,6 +337,8 @@ function renderDash() {
   if (tab === 'students') {
     root.querySelectorAll('[data-sid]').forEach((tr) =>
       tr.addEventListener('click', () => { state.detailStudent = tr.dataset.sid; renderDash(); }));
+    root.querySelectorAll('[data-detail]').forEach((b) =>
+      b.addEventListener('click', (e) => { e.stopPropagation(); state.detailStudent = b.dataset.detail; renderDash(); }));
   }
   if (window.renderIconsFallback) window.renderIconsFallback();
 }
