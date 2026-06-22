@@ -34,6 +34,14 @@ const PBL_PHASE = {
   refleksi: 'evaluasi',
 };
 
+// Label 4 dimensi kecakapan asesmen (Kilpatrick) — activityId asesmen = `<key>-<i>`.
+const DIMENSI = {
+  konseptual: 'Pemahaman Konsep',
+  prosedural: 'Kelancaran Berhitung',
+  strategis: 'Memecahkan Masalah',
+  adaptif: 'Berpikir Cermat',
+};
+
 const state = {
   pin: sessionStorage.getItem(PIN_KEY) || '',
   data: { students: [], answers: [], assessments: [], showcases: [] },
@@ -44,6 +52,9 @@ const state = {
   studentFilter: '',
   detailStudent: null,
   anonymize: false,
+  search: '',
+  sortCol: null,
+  sortDir: 1,
   error: '',
 };
 
@@ -65,8 +76,11 @@ async function loadAll() {
   (students || []).forEach((s) => { state.studentMap[s._id] = s; });
   // Agregat per siswa (kolom ringkas tabel Siswa + statistik).
   state.studentStats = {};
-  const stat = (sid) => state.studentStats[sid] || (state.studentStats[sid] = { answers: 0, correct: 0, phases: new Set(), assessment: null });
-  (answers || []).forEach((a) => { const t = stat(a.studentId); t.answers++; if (a.isCorrect === true) t.correct++; if (a.phase) t.phases.add(a.phase); });
+  const stat = (sid) => state.studentStats[sid] || (state.studentStats[sid] = { answers: 0, correct: 0, phases: new Set(), assessment: null, firstAt: null, lastAt: null });
+  (answers || []).forEach((a) => {
+    const t = stat(a.studentId); t.answers++; if (a.isCorrect === true) t.correct++; if (a.phase) t.phases.add(a.phase);
+    const ts = a.createdAt; if (ts) { if (!t.firstAt || ts < t.firstAt) t.firstAt = ts; if (!t.lastAt || ts > t.lastAt) t.lastAt = ts; }
+  });
   (assessments || []).forEach((a) => { stat(a.studentId).assessment = a.totalScore; });
 }
 
@@ -169,6 +183,81 @@ function rowsFor(tab) {
   return rows;
 }
 
+// Baris untuk DITAMPILKAN: rowsFor + pencarian + pengurutan (ekspor tetap pakai rowsFor).
+function displayRows(tab) {
+  let rows = rowsFor(tab).slice();
+  const cols = columnsFor(tab);
+  const q = state.search.trim().toLowerCase();
+  if (q) rows = rows.filter((r) => cols.some((c) => String(c.get(r)).toLowerCase().includes(q)));
+  if (state.sortCol != null && cols[state.sortCol]) {
+    const c = cols[state.sortCol];
+    rows.sort((a, b) => {
+      const va = c.get(a), vb = c.get(b);
+      const na = parseFloat(va), nb = parseFloat(vb);
+      const bothNum = !isNaN(na) && !isNaN(nb) && String(va).trim() !== '' && String(vb).trim() !== '';
+      return (bothNum ? na - nb : String(va).localeCompare(String(vb), 'id')) * state.sortDir;
+    });
+  }
+  return rows;
+}
+
+// Durasi belajar dari waktu jawaban pertama→terakhir.
+function fmtDur(firstAt, lastAt) {
+  if (!firstAt || !lastAt) return '';
+  const ms = new Date(lastAt) - new Date(firstAt);
+  if (isNaN(ms) || ms < 0) return '';
+  const min = Math.round(ms / 60000);
+  return min < 60 ? `${min} mnt` : `${Math.floor(min / 60)} j ${min % 60} mnt`;
+}
+
+// ─────────────────────── Statistik agregat (hormati filter kelas) ───────────────────────
+function statsView() {
+  const students = state.data.students.filter((s) => !state.classFilter || s.classCode === state.classFilter);
+  const sids = new Set(students.map((s) => s._id));
+  const answers = state.data.answers.filter((a) => sids.has(a.studentId));
+  const assessments = state.data.assessments.filter((a) => sids.has(a.studentId));
+  const N = students.length;
+  const phaseRows = PHASE_ORDER.map((p) => {
+    const fa = answers.filter((a) => a.phase === p.key);
+    const graded = fa.filter((a) => a.isCorrect != null);
+    const correct = fa.filter((a) => a.isCorrect === true).length;
+    const sIn = new Set(fa.map((a) => a.studentId)).size;
+    return { label: p.label, key: p.key, siswa: sIn, pct: N ? Math.round(sIn / N * 100) : 0, benarPct: graded.length ? Math.round(correct / graded.length * 100) : null };
+  });
+  const scores = assessments.map((a) => a.totalScore).filter((v) => typeof v === 'number');
+  const avg = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : null;
+  const mn = scores.length ? Math.min(...scores) : null, mx = scores.length ? Math.max(...scores) : null;
+  const cls = {};
+  students.forEach((s) => { const cc = s.classCode || '(tanpa kelas)'; (cls[cc] = cls[cc] || { n: 0, sc: [] }).n++; });
+  assessments.forEach((a) => { const s = state.studentMap[a.studentId]; const cc = (s && s.classCode) || '(tanpa kelas)'; if (cls[cc] && typeof a.totalScore === 'number') cls[cc].sc.push(a.totalScore); });
+  const clsRows = Object.entries(cls).sort((a, b) => a[0].localeCompare(b[0])).map(([cc, v]) => ({ cc, n: v.n, selesai: v.sc.length, avg: v.sc.length ? Math.round(v.sc.reduce((a, b) => a + b, 0) / v.sc.length) : null }));
+  const bar = (pct) => `<div style="background:#EEF2F7;border-radius:6px;height:8px;overflow:hidden;margin-top:4px"><div style="width:${pct}%;height:100%;background:var(--indigo)"></div></div>`;
+  return `
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+      <div class="vm-card p-4"><div class="text-xs font-black text-slate-500">Siswa${state.classFilter ? ' (kelas ini)' : ''}</div><div class="text-2xl font-black text-slate-800 mt-1">${N}</div></div>
+      <div class="vm-card p-4"><div class="text-xs font-black text-slate-500">Selesai asesmen</div><div class="text-2xl font-black text-slate-800 mt-1">${scores.length}</div></div>
+      <div class="vm-card p-4"><div class="text-xs font-black text-slate-500">Rata-rata skor</div><div class="text-2xl font-black text-slate-800 mt-1">${avg == null ? '—' : avg}</div></div>
+      <div class="vm-card p-4"><div class="text-xs font-black text-slate-500">Skor min–maks</div><div class="text-2xl font-black text-slate-800 mt-1">${mn == null ? '—' : mn + '–' + mx}</div></div>
+    </div>
+    <div class="vm-card p-5 mb-4">
+      <h3 class="font-black text-slate-800 mb-3">Penyelesaian & ketepatan per fase</h3>
+      <div class="space-y-3">
+        ${phaseRows.map((r) => `<div>
+          <div class="flex justify-between text-sm font-bold text-slate-700"><span>${esc(r.label)} <span class="text-slate-400 font-semibold">(${esc(r.key)})</span></span>
+            <span>${r.siswa}/${N} · ${r.pct}%${r.benarPct != null ? ` · benar ${r.benarPct}%` : ''}</span></div>
+          ${bar(r.pct)}</div>`).join('')}
+      </div>
+    </div>
+    <div class="vm-card p-0 overflow-hidden">
+      <div class="px-4 py-2.5 text-xs font-black text-slate-500 border-b border-slate-100">Per kelas</div>
+      <div class="overflow-x-auto"><table class="w-full text-sm">
+        <thead><tr class="text-left text-slate-500 font-black bg-slate-50"><th class="px-3 py-2">kelas</th><th class="px-3 py-2">siswa</th><th class="px-3 py-2">selesai asesmen</th><th class="px-3 py-2">rata-rata skor</th></tr></thead>
+        <tbody>${clsRows.length === 0 ? '<tr><td class="px-3 py-6 text-center text-slate-400 font-semibold" colspan="4">Belum ada data.</td></tr>'
+          : clsRows.map((r) => `<tr class="border-t border-slate-50"><td class="px-3 py-2 font-bold">${esc(r.cc)}</td><td class="px-3 py-2">${r.n}</td><td class="px-3 py-2">${r.selesai}</td><td class="px-3 py-2">${r.avg == null ? '—' : r.avg}</td></tr>`).join('')}
+        </tbody></table></div>
+    </div>`;
+}
+
 // ─────────────────────── Ekspor ───────────────────────
 function toCSV(rows, cols) {
   const escCSV = (v) => {
@@ -248,8 +337,10 @@ function renderDash() {
   ];
   const classes = allClasses();
   const tab = state.tab;
-  const cols = columnsFor(tab);
-  const rows = rowsFor(tab);
+  const isStats = tab === 'stats';
+  const cols = isStats ? [] : columnsFor(tab);
+  const rows = isStats ? [] : displayRows(tab);
+  const arrow = (i) => state.sortCol === i ? (state.sortDir === 1 ? ' ▲' : ' ▼') : '';
 
   root.innerHTML = `
     <div class="max-w-6xl mx-auto px-4 py-5">
@@ -280,33 +371,35 @@ function renderDash() {
         <div class="flex gap-1.5 flex-wrap">
           ${TABS.map((t) => `<button data-tab="${t.id}" class="vm-btn ${t.id === tab ? 'vm-btn-primary' : 'vm-btn-ghost'}" style="min-height:40px">
             <i class="ph-duotone ph-${t.icon}"></i> ${t.label}</button>`).join('')}
+          <button data-tab="stats" class="vm-btn ${isStats ? 'vm-btn-primary' : 'vm-btn-ghost'}" style="min-height:40px"><i class="ph-duotone ph-chart-bar"></i> Statistik</button>
         </div>
         <div class="flex items-center gap-2 ml-auto flex-wrap">
+          ${!isStats ? `<input id="search" class="vm-input" placeholder="Cari…" value="${esc(state.search)}" style="min-height:40px;width:9rem;padding:.4rem .7rem">` : ''}
           <select id="classFilter" class="vm-input" style="min-height:40px;width:auto;padding:.4rem .7rem">
             <option value="">Semua kelas</option>
             ${classes.map((cc) => `<option value="${esc(cc)}" ${cc === state.classFilter ? 'selected' : ''}>${esc(cc)}</option>`).join('')}
           </select>
-          <label class="flex items-center gap-1.5 text-xs font-black text-slate-600 cursor-pointer select-none">
+          ${!isStats ? `<label class="flex items-center gap-1.5 text-xs font-black text-slate-600 cursor-pointer select-none">
             <input id="anon" type="checkbox" ${state.anonymize ? 'checked' : ''}> Anonim
-          </label>
-          <button id="exportCSV" class="vm-btn vm-btn-ghost" style="min-height:40px"><i class="ph-duotone ph-download-simple"></i> CSV</button>
+          </label>` : ''}
+          ${!isStats ? `<button id="exportCSV" class="vm-btn vm-btn-ghost" style="min-height:40px"><i class="ph-duotone ph-download-simple"></i> CSV</button>` : ''}
           <button id="exportJSON" class="vm-btn vm-btn-ghost" style="min-height:40px"><i class="ph-duotone ph-brackets-curly"></i> JSON</button>
         </div>
       </div>
 
+      ${isStats ? statsView() : `
       ${state.studentFilter ? `<div class="mb-3 text-sm font-bold text-slate-600">
         Menyaring siswa: <span class="vm-chip" style="background:#EEF2FF;color:#4F46E5">${esc(nameById(state.studentFilter))}</span>
         <button id="clearStudent" class="vm-btn vm-btn-ghost ml-1" style="min-height:32px;padding:0 .6rem"><i class="ph-duotone ph-x"></i> hapus filter</button></div>` : ''}
-
       <div class="vm-card p-0 overflow-hidden">
         <div class="px-4 py-2.5 text-xs font-black text-slate-500 border-b border-slate-100 flex items-center justify-between">
           <span>${rows.length} baris</span>
-          ${tab === 'students' ? '<span class="text-slate-400">klik tombol Detail untuk lihat jawaban per fase</span>' : ''}
+          ${tab === 'students' ? '<span class="text-slate-400">klik header untuk urut · tombol Detail untuk per fase</span>' : '<span class="text-slate-400">klik header untuk urutkan</span>'}
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
             <thead><tr class="text-left text-slate-500 font-black bg-slate-50">
-              ${cols.map((c) => `<th class="px-3 py-2 whitespace-nowrap">${esc(c.label)}</th>`).join('')}
+              ${cols.map((c, i) => `<th class="px-3 py-2 whitespace-nowrap cursor-pointer select-none" data-sort="${i}" title="urutkan">${esc(c.label)}${arrow(i)}</th>`).join('')}
               ${tab === 'students' ? '<th class="px-3 py-2"></th>' : ''}
             </tr></thead>
             <tbody>
@@ -318,7 +411,7 @@ function renderDash() {
             </tbody>
           </table>
         </div>
-      </div>
+      </div>`}
     </div>`;
 
   // events
@@ -327,11 +420,23 @@ function renderDash() {
     sessionStorage.removeItem(PIN_KEY); state.pin = ''; renderGate('');
   });
   root.querySelectorAll('[data-tab]').forEach((b) =>
-    b.addEventListener('click', () => { state.tab = b.dataset.tab; renderDash(); }));
+    b.addEventListener('click', () => { state.tab = b.dataset.tab; state.sortCol = null; state.search = ''; renderDash(); }));
   root.querySelector('#classFilter').addEventListener('change', (e) => { state.classFilter = e.target.value; renderDash(); });
-  root.querySelector('#anon').addEventListener('change', (e) => { state.anonymize = e.target.checked; renderDash(); });
-  root.querySelector('#exportCSV').addEventListener('click', () => exportCSV(tab));
+  const anonEl = root.querySelector('#anon');
+  if (anonEl) anonEl.addEventListener('change', (e) => { state.anonymize = e.target.checked; renderDash(); });
+  const csvEl = root.querySelector('#exportCSV');
+  if (csvEl) csvEl.addEventListener('click', () => exportCSV(tab));
   root.querySelector('#exportJSON').addEventListener('click', exportAllJSON);
+  const searchEl = root.querySelector('#search');
+  if (searchEl) searchEl.addEventListener('input', (e) => {
+    state.search = e.target.value; renderDash();
+    const n = root.querySelector('#search'); if (n) { n.focus(); n.setSelectionRange(n.value.length, n.value.length); }
+  });
+  root.querySelectorAll('[data-sort]').forEach((th) => th.addEventListener('click', () => {
+    const i = +th.dataset.sort;
+    if (state.sortCol === i) state.sortDir *= -1; else { state.sortCol = i; state.sortDir = 1; }
+    renderDash();
+  }));
   const cs = root.querySelector('#clearStudent');
   if (cs) cs.addEventListener('click', () => { state.studentFilter = ''; renderDash(); });
   if (tab === 'students') {
@@ -357,6 +462,13 @@ function renderDetail(sid) {
   const works = (state.data.showcases || []).filter((w) => w.studentId === sid);
   const nm = state.anonymize ? 'S-' + String(sid).slice(-6) : (s.name || '(tanpa nama)');
   const sch = state.anonymize ? '' : (s.school || '');
+  const firstAt = ans.length ? ans[0].createdAt : null;
+  const lastAt = ans.length ? ans[ans.length - 1].createdAt : null;
+  const asesAns = ans.filter((a) => a.phase === 'asesmen');
+  const dimRows = Object.keys(DIMENSI).map((k) => {
+    const items = asesAns.filter((a) => String(a.activityId || '').split('-')[0] === k);
+    return { key: k, label: DIMENSI[k], total: items.length, benar: items.filter((a) => a.isCorrect === true).length };
+  }).filter((d) => d.total > 0);
 
   const known = new Set(PHASE_ORDER.map((p) => p.key));
   const groups = PHASE_ORDER.map((p) => ({ ...p, items: ans.filter((a) => a.phase === p.key) }));
@@ -383,6 +495,7 @@ function renderDetail(sid) {
             <h2 class="text-xl font-black text-slate-800">${esc(nm)}</h2>
             <p class="text-sm text-slate-500 font-semibold">${esc([sch, s.className, s.groupName].filter(Boolean).join(' · '))}
               ${s.classCode ? `<span class="vm-chip ml-1" style="background:#EEF2FF;color:#4F46E5">${esc(s.classCode)}</span>` : ''}</p>
+            ${firstAt ? `<p class="text-xs text-slate-400 font-semibold mt-1"><i class="ph-duotone ph-clock"></i> ${esc(fmtDate(firstAt))} – ${esc(fmtDate(lastAt))} · durasi ${esc(fmtDur(firstAt, lastAt))}</p>` : ''}
           </div>
           <div class="text-right">
             <div class="text-xs font-black text-slate-400">JAWABAN</div>
@@ -407,11 +520,15 @@ function renderDetail(sid) {
         </div>`;
       }).join('')}
 
-      ${asmt ? `
+      ${(asmt || dimRows.length) ? `
         <div class="vm-card p-4 mb-3">
           <div class="font-black text-slate-800 flex items-center gap-2 mb-1"><i class="ph-duotone ph-exam" style="color:#0D9488"></i> Hasil Asesmen</div>
-          <p class="text-sm text-slate-600 font-semibold">Skor total: <b>${esc(asmt.totalScore)}</b> · ${esc(fmtDate(asmt.submittedAt))}</p>
-          ${asmt.dimensions ? `<pre class="text-xs text-slate-500 mt-2 overflow-x-auto">${esc(JSON.stringify(asmt.dimensions, null, 2))}</pre>` : ''}
+          ${asmt ? `<p class="text-sm text-slate-600 font-semibold">Skor total: <b>${esc(asmt.totalScore)}</b> · ${esc(fmtDate(asmt.submittedAt))}</p>` : ''}
+          ${dimRows.length ? `<div class="mt-2 space-y-1.5">
+            ${dimRows.map((d) => { const pct = d.total ? Math.round(d.benar / d.total * 100) : 0; return `
+              <div class="flex justify-between text-sm"><span class="font-bold text-slate-700">${esc(d.label)} <span class="text-slate-400 font-semibold">(${esc(d.key)})</span></span>
+                <span class="font-black" style="color:${pct >= 70 ? 'var(--ok)' : 'var(--no)'}">${d.benar}/${d.total} · ${pct}%</span></div>`; }).join('')}
+          </div>` : ''}
         </div>` : ''}
 
       ${works.length ? `
