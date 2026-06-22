@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panduan Guru — ViaMath</title>
+  <meta name="description" content="Panduan penggunaan ViaMath untuk guru/pendamping: alur pembelajaran pecahan model PBL untuk Kelas 5 SD." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%235B8DEF'/%3E%3Ctext x='50' y='70' font-size='60' font-family='Nunito,sans-serif' font-weight='900' fill='white' text-anchor='middle'%3E%CF%80%3C/text%3E%3C/svg%3E" />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script>
+    tailwind.config = { theme: { extend: { fontFamily: { nunito: ['Nunito', 'sans-serif'] }, colors: { indigo: { brand: '#5B8DEF' }, purple: { brand: '#A78BFA' } } } } };
+  </script>
+  <style>
+    .doc h2 { font-weight: 900; color: #1e293b; font-size: 1.3rem; margin: 1.8rem 0 .6rem; padding-top: .6rem; border-top: 2px solid #EEF2F7; }
+    .doc h3 { font-weight: 800; color: #334155; font-size: 1.05rem; margin: 1.1rem 0 .35rem; }
+    .doc p { color: #475569; font-weight: 600; line-height: 1.7; margin: .5rem 0; }
+    .doc ul, .doc ol { color: #475569; font-weight: 600; line-height: 1.7; margin: .5rem 0 .5rem 1.25rem; }
+    .doc ul { list-style: disc; } .doc ol { list-style: decimal; } .doc li { margin: .25rem 0; }
+    .doc b, .doc strong { color: #1e293b; }
+    .doc table { width: 100%; border-collapse: collapse; margin: .75rem 0; font-size: .92rem; }
+    .doc th, .doc td { border: 1px solid #E2E8F0; padding: .5rem .7rem; text-align: left; vertical-align: top; color: #475569; }
+    .doc th { background: #F8FAFC; font-weight: 800; color: #334155; }
+    .doc a { color: #4F46E5; font-weight: 800; }
+    .callout { border-left: 5px solid var(--indigo); background: #EEF2FF; border-radius: .75rem; padding: .9rem 1rem; margin: .8rem 0; font-weight: 600; color: #3730A3; }
+    .callout.warn { border-color: #F59E0B; background: #FFFBEB; color: #92400E; }
+    @media print { .no-print { display: none !important; } body { background: #fff; } .doc-card { box-shadow: none !important; border: none !important; } }
+  </style>
+</head>
+<body class="h-full" style="background:var(--bg)">
+  <div class="max-w-3xl mx-auto px-4 py-6">
+
+    <div class="no-print flex items-center justify-between gap-3 mb-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl flex items-center justify-center text-white font-black" style="background:linear-gradient(135deg,var(--indigo),var(--purple))">π</div>
+        <div><h1 class="text-lg font-black text-slate-800 leading-tight">Panduan Guru — ViaMath</h1>
+          <p class="text-xs text-slate-500 font-semibold">Petualangan Pecahan · Kelas 5 SD · model PBL (Arends)</p></div>
+      </div>
+      <div class="flex gap-2">
+        <a href="index.html" class="vm-btn vm-btn-ghost" style="min-height:40px"><i class="ph-duotone ph-house"></i> Aplikasi</a>
+        <button onclick="window.print()" class="vm-btn vm-btn-primary" style="min-height:40px"><i class="ph-duotone ph-printer"></i> Cetak</button>
+      </div>
+    </div>
+
+    <article class="doc vm-card doc-card p-6 md:p-8">
+      <p style="margin-top:0"><i><b>Media pembelajaran pecahan untuk Kelas 5 SD</b> dengan model <b>Problem-Based Learning (PBL)</b> — sintaks Arends (5 fase). Panduan ini membantu guru/pendamping menjalankan media dan menjelaskannya ke siswa.</i></p>
+      <p>🔗 Aplikasi: <a href="https://viamath.fun">viamath.fun</a> &nbsp;·&nbsp; 📊 Dashboard guru/peneliti: <a href="https://viamath.fun/admin.html">viamath.fun/admin.html</a> (perlu PIN dari peneliti)</p>
+
+      <h2>A. Sebelum mulai (persiapan)</h2>
+      <ol>
+        <li><b>Perangkat:</b> HP, tablet, atau komputer dengan browser (Chrome/Safari/Edge). Bisa 1 perangkat per anak atau bergantian.</li>
+        <li><b>Internet:</b> disarankan ada, tetapi media <b>tetap jalan walau koneksi lemah/putus</b> — jawaban tersimpan di perangkat dan <b>otomatis terkirim saat online kembali</b> (<i>offline-first</i>).</li>
+        <li><b>Buka</b> <a href="https://viamath.fun">viamath.fun</a>. Untuk tampilan terbaru, sekali waktu lakukan <b>muat ulang penuh</b> (<code>Ctrl/Cmd+Shift+R</code>).</li>
+        <li><b>Sepakati cara menulis identitas</b> (lihat B): nama <b>sekolah</b> dan <b>kelas</b> harus ditulis <b>seragam</b> oleh semua siswa satu kelas.</li>
+      </ol>
+      <div class="callout">💡 <b>Prinsip dua lapis:</b> istilah "Fase PBL" adalah <b>bahasa guru</b> untuk panduan ini. Yang dilihat <b>siswa</b> hanyalah label petualangan ramah anak (Tantangan Cerita, Bentuk Tim, …). Jangan bebani anak dengan istilah teknis.</div>
+
+      <h2>B. Langkah pertama siswa: "Kenalan dulu"</h2>
+      <p>Saat pertama membuka, siswa mengisi: <b>Nama</b>, <b>Sekolah</b>, <b>Kelas</b>, dan (opsional) <b>Nama Kelompok</b>.</p>
+      <ul>
+        <li>Aplikasi otomatis membuat <b>Kode Kelas</b> dari <i>kelas + singkatan sekolah</i> (mis. kelas <b>5A</b> + sekolah <b>Esa Kareem</b> → <b>5A-EK</b>).</li>
+        <li><b>Kode Kelas inilah yang menggabungkan data siswa di dashboard guru.</b></li>
+      </ul>
+      <div class="callout warn">⚠️ <b>Wajib diperhatikan guru:</b> agar satu kelas tergabung rapi, <b>tuliskan nama sekolah &amp; kelas dengan cara yang SAMA</b> untuk semua siswa. Beda penulisan → kode kelas pecah. <b>Tuliskan contoh baku di papan</b> sebelum siswa mengisi.</div>
+      <p><b>Cara menjelaskan ke siswa:</b> <i>"Ayo kenalan dulu! Tulis namamu, sekolah (seperti yang Bapak/Ibu tulis di papan), dan kelasmu. Kalau punya kelompok, tulis nama kelompoknya."</i></p>
+
+      <h2>C. Alur petualangan (per langkah)</h2>
+      <p>Menu di sisi kiri (atau tombol ☰ di HP). Tiap langkah memberi <b>bintang, badge, dan skor</b>. Berikut tujuan tiap langkah (fase PBL), yang dilakukan siswa, peran guru, dan kalimat untuk siswa.</p>
+
+      <h3>1. Beranda</h3>
+      <ul><li><b>Untuk:</b> titik awal, melihat peta petualangan &amp; progres. Arahkan anak mulai dari "Tantangan Cerita".</li></ul>
+
+      <h3>2. Tantangan Cerita — <span style="color:var(--indigo)">Fase 1: Orientasi pada masalah</span></h3>
+      <ul>
+        <li><b>Siswa:</b> membaca cerita <b>Pesta Pizza Rara</b> (masalah utama) &amp; "Berbagi Kue", lalu menjawab "Ayo Pikirkan".</li>
+        <li><b>Guru:</b> ulas masalahnya; pastikan anak paham <b>pertanyaan pemandu</b> ("berapa bagian, berapa total, adakah sisa?").</li>
+        <li><b>Untuk siswa:</b> <i>"Hari ini kita punya satu masalah: Pesta Pizza Rara. Baca ceritanya, lalu tulis dugaanmu."</i></li>
+      </ul>
+
+      <h3>3. Bentuk Tim — <span style="color:var(--indigo)">Fase 2: Mengorganisasi untuk belajar</span></h3>
+      <ul>
+        <li><b>Siswa:</b> menulis anggota tim + mengisi 4 kotak "Mari Pahami" (apa diketahui, apa dicari, petunjuk penting, rencana cara).</li>
+        <li><b>Guru:</b> dampingi diskusi kelompok singkat; melatih anak <b>merencanakan</b> sebelum menghitung.</li>
+        <li><b>Untuk siswa:</b> <i>"Sebelum menyelidiki, pahami dulu: apa yang kita tahu dari cerita pizza, dan apa yang harus dicari?"</i></li>
+      </ul>
+
+      <h3>4. Mari Selidiki — <span style="color:var(--indigo)">Fase 3: Membimbing penyelidikan</span></h3>
+      <ul>
+        <li><b>Dua bagian:</b> <b>Sumber Belajar</b> (materi pecahan interaktif + cara senilai &amp; membandingkan) dan <b>Tantangan Penyelidikan</b> (mulai "Selidiki Masalah Pizza": dugaan → uji dengan gambar → simpulkan; soal <b>PENGAYAAN</b> boleh dilewati).</li>
+        <li><b>Guru:</b> minta anak <b>pelajari Sumber Belajar dulu</b>; tekankan <b>memeriksa dengan gambar</b>.</li>
+        <li><b>Untuk siswa:</b> <i>"Pelajari Sumber Belajar dulu, lalu pecahkan tantangannya. Tebak dulu, periksa dengan gambar, baru tulis jawaban akhir."</i></li>
+      </ul>
+
+      <h3>5. Pamerkan Hasil — <span style="color:var(--indigo)">Fase 4: Mengembangkan &amp; menyajikan karya</span></h3>
+      <ul>
+        <li><b>Siswa:</b> membuat karya (soal pecahan buatan sendiri / solusi masalah pizza) lalu <b>memamerkannya</b> ke galeri; bisa melihat karya teman.</li>
+        <li><b>Guru:</b> momen <b>presentasi</b> — beri waktu beberapa anak <b>menyajikan karyanya di depan kelas</b> (bagian PBL yang dilakukan langsung).</li>
+        <li><b>Untuk siswa:</b> <i>"Tunjukkan hasilmu! Buat satu soal pecahan dari kehidupan sehari-hari lengkap dengan jawabannya, lalu pamerkan."</i></li>
+      </ul>
+
+      <h3>6. Uji Kemampuan — <span style="color:#0D9488">Asesmen (pengukuran hasil)</span></h3>
+      <ul>
+        <li><b>Siswa:</b> kuis pilihan ganda <b>4 dimensi</b> (Pemahaman Konsep, Kelancaran Berhitung, Memecahkan Masalah, Berpikir Cermat). Perlu <b>≥70% per dimensi</b>; boleh mencoba lagi.</li>
+        <li><b>Guru:</b> minta anak mengerjakan <b>mandiri</b>; ada tombol <b>"Petunjuk"</b> bila perlu.</li>
+        <li><b>Untuk siswa:</b> <i>"Tunjukkan kemampuanmu. Kerjakan sendiri pelan-pelan; kalau salah, boleh coba lagi."</i></li>
+      </ul>
+
+      <h3>7. Renungkan — <span style="color:var(--indigo)">Fase 5: Menganalisis &amp; mengevaluasi proses</span></h3>
+      <ul>
+        <li><b>Siswa:</b> menjawab pertanyaan reflektif + <b>penilaian diri</b> (skala emoji).</li>
+        <li><b>Guru:</b> ajak anak menyimpulkan <b>apa yang dipelajari &amp; dirasakan</b> hari ini.</li>
+        <li><b>Untuk siswa:</b> <i>"Petualangan selesai! Ceritakan apa yang baru kamu pelajari dan bagian mana yang seru atau sulit."</i></li>
+      </ul>
+
+      <h2>D. Berbagi perangkat &amp; ganti pemain</h2>
+      <p>Bila satu perangkat dipakai bergantian: setelah seorang siswa selesai, klik <b>"Keluar / Ganti Pemain"</b> (menu kiri). Perangkat kembali ke layar "Kenalan dulu" untuk anak berikutnya. <b>Data yang sudah terkirim ke server TIDAK hilang.</b></p>
+
+      <h2>E. Dashboard Guru/Peneliti (read-only)</h2>
+      <p>Buka <a href="https://viamath.fun/admin.html">viamath.fun/admin.html</a>, masukkan <b>PIN</b> (dari peneliti). Yang bisa dilihat:</p>
+      <ul>
+        <li><b>Ringkasan</b> jumlah siswa, jawaban, asesmen, karya.</li>
+        <li><b>Siswa:</b> tabel + tombol <b>Detail</b> (kolom pertama) → jawaban <b>per fase</b>, hasil <b>4 dimensi asesmen</b>, <b>waktu/durasi</b> belajar.</li>
+        <li><b>Statistik:</b> penyelesaian &amp; ketepatan <b>per fase</b>, rata-rata skor, <b>per kelas</b>.</li>
+        <li><b>Filter kelas</b>, <b>Cari</b>, <b>urutkan</b> (klik header), <b>Ekspor CSV/JSON</b>, tombol <b>Anonim</b>.</li>
+      </ul>
+
+      <h2>F. Masalah umum &amp; solusi</h2>
+      <table>
+        <thead><tr><th>Gejala</th><th>Solusi</th></tr></thead>
+        <tbody>
+          <tr><td>Tampilan/menu terasa versi lama</td><td>Muat ulang penuh: <code>Ctrl/Cmd + Shift + R</code></td></tr>
+          <tr><td>Data siswa tidak muncul di dashboard</td><td>Pastikan online; buka ulang aplikasi di perangkat siswa agar antrean tersinkron; cek Kode Kelas sama</td></tr>
+          <tr><td>Satu kelas terpecah di dashboard</td><td>Penulisan sekolah/kelas berbeda → samakan; tuliskan baku di papan sejak awal</td></tr>
+          <tr><td>Anak ingin mengulang dari awal</td><td>Keluar / Ganti Pemain lalu isi identitas lagi</td></tr>
+          <tr><td>Internet putus saat mengerjakan</td><td>Tidak apa-apa — anak tetap bisa lanjut; data terkirim otomatis saat online</td></tr>
+        </tbody>
+      </table>
+
+      <h2>G. Ringkasan 1 halaman</h2>
+      <ol>
+        <li>Buka <b>viamath.fun</b> → <b>Kenalan dulu</b> (nama, sekolah, kelas — <b>tulis seragam!</b>).</li>
+        <li>Ikuti urutan: <b>Tantangan Cerita → Bentuk Tim → Mari Selidiki → Pamerkan Hasil → Uji Kemampuan → Renungkan</b>.</li>
+        <li>Inti tiap fase: <b>pahami masalah → rencanakan → selidiki (tebak-uji-simpulkan) → sajikan karya → uji → renungkan.</b></li>
+        <li>Peran guru: <b>fasilitator</b> — pandu diskusi kelompok &amp; <b>presentasi di kelas</b>.</li>
+        <li>Berbagi perangkat: <b>Keluar / Ganti Pemain</b>.</li>
+        <li>Pantau &amp; ekspor data: <b>viamath.fun/admin.html</b> (PIN).</li>
+      </ol>
+      <p style="text-align:center;margin-top:1.5rem"><i>Selamat bertualang dengan pecahan! 🧭</i></p>
+    </article>
+
+    <p class="no-print text-center text-xs text-slate-400 font-semibold mt-4">ViaMath · Panduan Guru</p>
+  </div>
+</body>
+</html>
