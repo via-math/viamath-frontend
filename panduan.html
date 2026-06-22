@@ -26,6 +26,8 @@
     .doc a { color: #4F46E5; font-weight: 800; }
     .callout { border-left: 5px solid var(--indigo); background: #EEF2FF; border-radius: .75rem; padding: .9rem 1rem; margin: .8rem 0; font-weight: 600; color: #3730A3; }
     .callout.warn { border-color: #F59E0B; background: #FFFBEB; color: #92400E; }
+    .shot { display:block; width:100%; max-width:740px; margin:.7rem auto .4rem; border:1px solid #E2E8F0; border-radius:.8rem; box-shadow:0 6px 18px rgba(15,23,42,.10); }
+    .cap { text-align:center; font-size:.78rem; color:#94a3b8; font-weight:700; margin:0 0 1.1rem; }
     @media print { .no-print { display: none !important; } body { background: #fff; } .doc-card { box-shadow: none !important; border: none !important; } }
   </style>
 </head>
@@ -53,26 +55,32 @@
         <li><b>Perangkat:</b> HP, tablet, atau komputer dengan browser (Chrome/Safari/Edge). Bisa 1 perangkat per anak atau bergantian.</li>
         <li><b>Internet:</b> disarankan ada, tetapi media <b>tetap jalan walau koneksi lemah/putus</b> — jawaban tersimpan di perangkat dan <b>otomatis terkirim saat online kembali</b> (<i>offline-first</i>).</li>
         <li><b>Buka</b> <a href="https://viamath.fun">viamath.fun</a>. Untuk tampilan terbaru, sekali waktu lakukan <b>muat ulang penuh</b> (<code>Ctrl/Cmd+Shift+R</code>).</li>
-        <li><b>Sepakati cara menulis identitas</b> (lihat B): nama <b>sekolah</b> dan <b>kelas</b> harus ditulis <b>seragam</b> oleh semua siswa satu kelas.</li>
+        <li><b>Sepakati penulisan nama sekolah</b> (lihat B): minta semua siswa satu kelas menulis <b>nama sekolah persis sama</b> (kelas dipilih dari daftar, sudah seragam).</li>
       </ol>
       <div class="callout">💡 <b>Prinsip dua lapis:</b> istilah "Fase PBL" adalah <b>bahasa guru</b> untuk panduan ini. Yang dilihat <b>siswa</b> hanyalah label petualangan ramah anak (Tantangan Cerita, Bentuk Tim, …). Jangan bebani anak dengan istilah teknis.</div>
 
       <h2>B. Langkah pertama siswa: "Kenalan dulu"</h2>
+      <img class="shot" src="assets/img/screenshots/onboarding.jpg" alt="Layar Kenalan dulu — pendaftaran siswa">
+      <p class="cap">Layar "Kenalan dulu" (pendaftaran siswa).</p>
       <p>Saat pertama membuka, siswa mengisi: <b>Nama</b>, <b>Sekolah</b>, <b>Kelas</b>, dan (opsional) <b>Nama Kelompok</b>.</p>
       <ul>
         <li>Aplikasi otomatis membuat <b>Kode Kelas</b> dari <i>kelas + singkatan sekolah</i> (mis. kelas <b>5A</b> + sekolah <b>Esa Kareem</b> → <b>5A-EK</b>).</li>
         <li><b>Kode Kelas inilah yang menggabungkan data siswa di dashboard guru.</b></li>
       </ul>
-      <div class="callout warn">⚠️ <b>Wajib diperhatikan guru:</b> agar satu kelas tergabung rapi, <b>tuliskan nama sekolah &amp; kelas dengan cara yang SAMA</b> untuk semua siswa. Beda penulisan → kode kelas pecah. <b>Tuliskan contoh baku di papan</b> sebelum siswa mengisi.</div>
+      <div class="callout warn">⚠️ <b>Wajib diperhatikan guru:</b> <b>Kelas</b> dipilih dari daftar (otomatis konsisten), tetapi <b>nama sekolah diketik bebas</b>. Minta semua siswa satu kelas menulis <b>nama sekolah persis sama</b> (mis. "Esa Kareem") — beda penulisan → kode kelas pecah. <b>Tuliskan contoh baku di papan</b> sebelum siswa mengisi.</div>
       <p><b>Cara menjelaskan ke siswa:</b> <i>"Ayo kenalan dulu! Tulis namamu, sekolah (seperti yang Bapak/Ibu tulis di papan), dan kelasmu. Kalau punya kelompok, tulis nama kelompoknya."</i></p>
 
       <h2>C. Alur petualangan (per langkah)</h2>
       <p>Menu di sisi kiri (atau tombol ☰ di HP). Tiap langkah memberi <b>bintang, badge, dan skor</b>. Berikut tujuan tiap langkah (fase PBL), yang dilakukan siswa, peran guru, dan kalimat untuk siswa.</p>
 
       <h3>1. Beranda</h3>
+      <img class="shot" src="assets/img/screenshots/beranda.jpg" alt="Layar Beranda">
+      <p class="cap">Beranda — peta petualangan & progres.</p>
       <ul><li><b>Untuk:</b> titik awal, melihat peta petualangan &amp; progres. Arahkan anak mulai dari "Tantangan Cerita".</li></ul>
 
       <h3>2. Tantangan Cerita — <span style="color:var(--indigo)">Fase 1: Orientasi pada masalah</span></h3>
+      <img class="shot" src="assets/img/screenshots/masalah.jpg" alt="Layar Tantangan Cerita">
+      <p class="cap">Tantangan Cerita — masalah "Pesta Pizza Rara".</p>
       <ul>
         <li><b>Siswa:</b> membaca cerita <b>Pesta Pizza Rara</b> (masalah utama) &amp; "Berbagi Kue", lalu menjawab "Ayo Pikirkan".</li>
         <li><b>Guru:</b> ulas masalahnya; pastikan anak paham <b>pertanyaan pemandu</b> ("berapa bagian, berapa total, adakah sisa?").</li>
@@ -80,6 +88,8 @@
       </ul>
 
       <h3>3. Bentuk Tim — <span style="color:var(--indigo)">Fase 2: Mengorganisasi untuk belajar</span></h3>
+      <img class="shot" src="assets/img/screenshots/organisasi.jpg" alt="Layar Bentuk Tim">
+      <p class="cap">Bentuk Tim — anggota tim & "Mari Pahami".</p>
       <ul>
         <li><b>Siswa:</b> menulis anggota tim + mengisi 4 kotak "Mari Pahami" (apa diketahui, apa dicari, petunjuk penting, rencana cara).</li>
         <li><b>Guru:</b> dampingi diskusi kelompok singkat; melatih anak <b>merencanakan</b> sebelum menghitung.</li>
@@ -87,6 +97,8 @@
       </ul>
 
       <h3>4. Mari Selidiki — <span style="color:var(--indigo)">Fase 3: Membimbing penyelidikan</span></h3>
+      <img class="shot" src="assets/img/screenshots/penyelidikan.jpg" alt="Layar Mari Selidiki">
+      <p class="cap">Mari Selidiki — Sumber Belajar & Tantangan Penyelidikan.</p>
       <ul>
         <li><b>Dua bagian:</b> <b>Sumber Belajar</b> (materi pecahan interaktif + cara senilai &amp; membandingkan) dan <b>Tantangan Penyelidikan</b> (mulai "Selidiki Masalah Pizza": dugaan → uji dengan gambar → simpulkan; soal <b>PENGAYAAN</b> boleh dilewati).</li>
         <li><b>Guru:</b> minta anak <b>pelajari Sumber Belajar dulu</b>; tekankan <b>memeriksa dengan gambar</b>.</li>
@@ -94,6 +106,8 @@
       </ul>
 
       <h3>5. Pamerkan Hasil — <span style="color:var(--indigo)">Fase 4: Mengembangkan &amp; menyajikan karya</span></h3>
+      <img class="shot" src="assets/img/screenshots/pameran.jpg" alt="Layar Pamerkan Hasil">
+      <p class="cap">Pamerkan Hasil — buat karya & galeri.</p>
       <ul>
         <li><b>Siswa:</b> membuat karya (soal pecahan buatan sendiri / solusi masalah pizza) lalu <b>memamerkannya</b> ke galeri; bisa melihat karya teman.</li>
         <li><b>Guru:</b> momen <b>presentasi</b> — beri waktu beberapa anak <b>menyajikan karyanya di depan kelas</b> (bagian PBL yang dilakukan langsung).</li>
@@ -101,6 +115,8 @@
       </ul>
 
       <h3>6. Uji Kemampuan — <span style="color:#0D9488">Asesmen (pengukuran hasil)</span></h3>
+      <img class="shot" src="assets/img/screenshots/asesmen.jpg" alt="Layar Uji Kemampuan">
+      <p class="cap">Uji Kemampuan — kuis 4 dimensi kecakapan.</p>
       <ul>
         <li><b>Siswa:</b> kuis pilihan ganda <b>4 dimensi</b> (Pemahaman Konsep, Kelancaran Berhitung, Memecahkan Masalah, Berpikir Cermat). Perlu <b>≥70% per dimensi</b>; boleh mencoba lagi.</li>
         <li><b>Guru:</b> minta anak mengerjakan <b>mandiri</b>; ada tombol <b>"Petunjuk"</b> bila perlu.</li>
@@ -108,6 +124,8 @@
       </ul>
 
       <h3>7. Renungkan — <span style="color:var(--indigo)">Fase 5: Menganalisis &amp; mengevaluasi proses</span></h3>
+      <img class="shot" src="assets/img/screenshots/refleksi.jpg" alt="Layar Renungkan">
+      <p class="cap">Renungkan — refleksi & penilaian diri.</p>
       <ul>
         <li><b>Siswa:</b> menjawab pertanyaan reflektif + <b>penilaian diri</b> (skala emoji).</li>
         <li><b>Guru:</b> ajak anak menyimpulkan <b>apa yang dipelajari &amp; dirasakan</b> hari ini.</li>
@@ -118,6 +136,8 @@
       <p>Bila satu perangkat dipakai bergantian: setelah seorang siswa selesai, klik <b>"Keluar / Ganti Pemain"</b> (menu kiri). Perangkat kembali ke layar "Kenalan dulu" untuk anak berikutnya. <b>Data yang sudah terkirim ke server TIDAK hilang.</b></p>
 
       <h2>E. Dashboard Guru/Peneliti (read-only)</h2>
+      <img class="shot" src="assets/img/screenshots/admin.jpg" alt="Gerbang PIN Dashboard">
+      <p class="cap">Dashboard Peneliti — masukkan PIN untuk masuk.</p>
       <p>Buka <a href="https://viamath.fun/admin.html">viamath.fun/admin.html</a>, masukkan <b>PIN</b> (dari peneliti). Yang bisa dilihat:</p>
       <ul>
         <li><b>Ringkasan</b> jumlah siswa, jawaban, asesmen, karya.</li>
