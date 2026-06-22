@@ -6,7 +6,7 @@ import { Store } from '../store.js';
 import { Api } from '../api.js';
 import { fractionCircle, foodFraction, pizzaFraction, chocoBar, fracHTML, interactiveBar, barModel } from '../components/fraction-circle.js';
 import { checkAnswer } from '../components/fraction-math.js';
-import { pageHeader, mascotNote, problemBanner } from '../components/page-kit.js';
+import { pageHeader, mascotNote } from '../components/page-kit.js';
 import { renderIcons, toast, playSound, celebrate } from '../components/toast.js';
 import { Router } from '../router.js';
 
@@ -18,7 +18,6 @@ export function renderPenyelidikan(container) {
   el.innerHTML = `
     ${pageHeader('search', 'Mari Selidiki', 'Saatnya jadi penyelidik pecahan! Pelajari sumbernya, lalu pecahkan setiap tantangan.')}
     ${mascotNote('Pelajari dulu "Sumber Belajar" untuk membantumu, lalu kerjakan "Tantangan Penyelidikan". Kamu pasti bisa!')}
-    ${problemBanner()}
     <div class="flex gap-2 vm-scroll-x pb-1">
       <button data-tab="materi" class="vm-btn"><i class="ph-duotone ph-book-open"></i> Sumber Belajar</button>
       <button data-tab="aktivitas" class="vm-btn"><i class="ph-duotone ph-flask"></i> Tantangan Penyelidikan</button>
