@@ -399,14 +399,14 @@ function renderDash() {
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
             <thead><tr class="text-left text-slate-500 font-black bg-slate-50">
-              ${cols.map((c, i) => `<th class="px-3 py-2 whitespace-nowrap cursor-pointer select-none" data-sort="${i}" title="urutkan">${esc(c.label)}${arrow(i)}</th>`).join('')}
               ${tab === 'students' ? '<th class="px-3 py-2"></th>' : ''}
+              ${cols.map((c, i) => `<th class="px-3 py-2 whitespace-nowrap cursor-pointer select-none" data-sort="${i}" title="urutkan">${esc(c.label)}${arrow(i)}</th>`).join('')}
             </tr></thead>
             <tbody>
               ${rows.length === 0 ? `<tr><td class="px-3 py-6 text-center text-slate-400 font-semibold" colspan="${cols.length + (tab === 'students' ? 1 : 0)}">Belum ada data.</td></tr>`
                 : rows.map((r) => `<tr class="border-t border-slate-50 hover:bg-indigo-50/40 ${tab === 'students' ? 'cursor-pointer' : ''}" ${tab === 'students' ? `data-sid="${esc(r._id)}"` : ''}>
+                  ${tab === 'students' ? `<td class="px-3 py-2 whitespace-nowrap"><button class="vm-btn vm-btn-primary" data-detail="${esc(r._id)}" style="min-height:30px;padding:.15rem .7rem"><i class="ph-duotone ph-eye"></i> Detail</button></td>` : ''}
                   ${cols.map((c) => `<td class="px-3 py-2 align-top" style="max-width:320px">${esc(c.get(r))}</td>`).join('')}
-                  ${tab === 'students' ? `<td class="px-3 py-2 whitespace-nowrap"><button class="vm-btn vm-btn-ghost" data-detail="${esc(r._id)}" style="min-height:30px;padding:.15rem .6rem"><i class="ph-duotone ph-eye"></i> Detail</button></td>` : ''}
                 </tr>`).join('')}
             </tbody>
           </table>
