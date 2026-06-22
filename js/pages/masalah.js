@@ -51,7 +51,7 @@ export function renderMasalah(container) {
       const id = Number(b.dataset.cerita);
       const on = id === aktif;
       b.className = 'vm-btn ' + (on ? 'vm-btn-primary' : 'vm-btn-ghost');
-      b.innerHTML = `<img src="img/${CERITA[id].img}.svg" alt="" style="width:1.3rem;height:1.3rem;vertical-align:-3px"> Cerita ${id}: ${id === 1 ? 'Pizza' : 'Kue'}`;
+      b.innerHTML = `<img src="assets/img/${CERITA[id].img}.svg" alt="" style="width:1.3rem;height:1.3rem;vertical-align:-3px"> Cerita ${id}: ${id === 1 ? 'Pizza' : 'Kue'}`;
     });
   }
 
@@ -60,7 +60,7 @@ export function renderMasalah(container) {
     const box = el.querySelector('#cerita-box');
     box.innerHTML = `
       <div class="vm-card p-6 md:p-7 fade-up">
-        <h3 class="text-xl font-black text-slate-800 mb-1 flex items-center gap-2"><img src="img/${c.img}.svg" alt="" style="width:1.7rem;height:1.7rem"> ${c.judul}</h3>
+        <h3 class="text-xl font-black text-slate-800 mb-1 flex items-center gap-2"><img src="assets/img/${c.img}.svg" alt="" style="width:1.7rem;height:1.7rem"> ${c.judul}</h3>
         <p class="text-slate-600 font-semibold leading-relaxed">${c.teks}</p>
 
         <div class="my-6 flex flex-col items-center">
