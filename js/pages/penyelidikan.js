@@ -4,7 +4,7 @@
 
 import { Store } from '../store.js';
 import { Api } from '../api.js';
-import { fractionCircle, pizzaFraction, fracHTML, interactiveBar, barModel } from '../components/fraction-circle.js';
+import { fractionCircle, foodFraction, pizzaFraction, chocoBar, fracHTML, interactiveBar, barModel } from '../components/fraction-circle.js';
 import { checkAnswer } from '../components/fraction-math.js';
 import { pageHeader, mascotNote, problemBanner } from '../components/page-kit.js';
 import { renderIcons, toast, playSound, celebrate } from '../components/toast.js';
@@ -64,9 +64,9 @@ function renderMateri() {
       </div>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">
-      ${[['pizza', 3, 8, 'Pizza'], ['semangka', 1, 2, 'Semangka'], ['cokelat', 3, 8, 'Cokelat'], ['kue', 1, 4, 'Kue']].map(
-        ([ic, a, b, nama]) => `<div class="vm-card p-3 text-center" style="box-shadow:none">
-          <div><img src="img/${ic}.svg" alt="${nama}" style="width:2.4rem;height:2.4rem" loading="lazy"></div>${fracHTML(a, b)}<p class="text-xs text-slate-500 font-bold mt-1">${nama}</p></div>`
+      ${[['pizza', 3, 8, 'Pizza'], ['melon', 1, 2, 'Semangka'], ['choco', 3, 8, 'Cokelat'], ['cake', 1, 4, 'Kue']].map(
+        ([kind, a, b, nama]) => `<div class="vm-card p-3 text-center" style="box-shadow:none">
+          <div class="flex justify-center items-center" style="height:64px">${kind === 'choco' ? chocoBar(a, b, 64) : foodFraction(a, b, 64, kind)}</div>${fracHTML(a, b)}<p class="text-xs text-slate-500 font-bold mt-1">${nama}</p></div>`
       ).join('')}
     </div>`;
 
