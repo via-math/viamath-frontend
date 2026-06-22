@@ -36,7 +36,7 @@ export const STEPS = [
 // Masalah utama (driving problem) — benang merah lintas fase PBL Arends (revisi A′).
 // Satu masalah ini dirujuk di tiap fase: orientasi → organisasi → penyelidikan → menyajikan → evaluasi.
 export const DRIVING_PROBLEM = {
-  img: 'pizza', // ikon SVG di frontend/img/
+  img: 'pizza', // ikon SVG di frontend/assets/img/
   title: 'Pesta Pizza Rara',
   story: 'Rara berulang tahun. Ibu membeli 1 pizza dan memotongnya menjadi 8 bagian sama besar. Rara dan 3 temannya (4 anak) masing-masing mengambil 2 potong.',
   question: 'Berapa bagian pizza tiap anak, berapa total yang dimakan semua anak, dan adakah sisanya? Tulis dalam pecahan.',

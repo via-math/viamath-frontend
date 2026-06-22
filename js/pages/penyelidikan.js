@@ -233,7 +233,7 @@ function renderPizzaInquiry() {
   sec.className = 'vm-card p-6';
   sec.innerHTML = `
     <div class="flex items-center gap-2 mb-1 flex-wrap">
-      <h3 class="font-black text-slate-800 flex items-center gap-1.5"><img src="img/pizza.svg" alt="" style="width:1.5rem;height:1.5rem"> Selidiki Masalah Pizza</h3>
+      <h3 class="font-black text-slate-800 flex items-center gap-1.5"><img src="assets/img/pizza.svg" alt="" style="width:1.5rem;height:1.5rem"> Selidiki Masalah Pizza</h3>
       <span class="vm-chip" style="background:#FEF3C7;color:#B45309">Masalah utama</span>
     </div>
     <p class="text-sm text-slate-600 font-semibold p-3 rounded-xl mb-3" style="background:#FFF7ED">Pizza Rara dipotong 8 bagian. Rara &amp; 3 temannya (4 anak) masing-masing makan 2 potong. Ayo selidiki untuk menjawab masalah kita!</p>
