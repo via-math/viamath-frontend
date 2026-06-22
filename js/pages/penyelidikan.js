@@ -4,7 +4,7 @@
 
 import { Store } from '../store.js';
 import { Api } from '../api.js';
-import { fractionCircle, pizzaFraction, pizzaArtFraction, fracHTML, interactiveBar, barModel } from '../components/fraction-circle.js';
+import { fractionCircle, pizzaFraction, fracHTML, interactiveBar, barModel } from '../components/fraction-circle.js';
 import { checkAnswer } from '../components/fraction-math.js';
 import { pageHeader, mascotNote, problemBanner } from '../components/page-kit.js';
 import { renderIcons, toast, playSound, celebrate } from '../components/toast.js';
@@ -257,7 +257,7 @@ function renderPizzaInquiry() {
     </div>
     <p class="text-sm font-bold mt-1" id="pz-fb"></p>`;
 
-  sec.querySelector('#pz-visual').innerHTML = pizzaArtFraction(8, 8, 150);
+  sec.querySelector('#pz-visual').innerHTML = pizzaFraction(8, 8, 150);
 
   sec.querySelector('#pz-check').addEventListener('click', () => {
     const sid = Store.get().student?.id;
