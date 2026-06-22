@@ -4,7 +4,7 @@
 import { Store } from '../store.js';
 import { Api } from '../api.js';
 import { fractionCircle, fracHTML } from '../components/fraction-circle.js';
-import { pageHeader, mascotNote, finishButton, wireFinish } from '../components/page-kit.js';
+import { pageHeader, mascotNote, problemBanner, finishButton, wireFinish } from '../components/page-kit.js';
 import { renderIcons, toast } from '../components/toast.js';
 
 const CERITA = {
@@ -40,6 +40,7 @@ export function renderMasalah(container) {
   el.innerHTML = `
     ${pageHeader('puzzle', 'Tantangan Cerita', 'Bacalah cerita berikut, lalu pikirkan jawabannya. Petualangan dimulai dari sebuah masalah!')}
     ${mascotNote('Setiap petualangan hebat dimulai dari sebuah masalah. Yuk, baca ceritanya dan temukan pecahannya!')}
+    ${problemBanner()}
     <div class="flex gap-2 vm-scroll-x pb-1">
       <button data-cerita="1" class="vm-btn cerita-tab"></button>
       <button data-cerita="2" class="vm-btn cerita-tab"></button>

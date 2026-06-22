@@ -2,7 +2,21 @@
 
 import { Store } from '../store.js';
 import { Router } from '../router.js';
+import { DRIVING_PROBLEM } from '../config.js';
 import { celebrate, toast, playSound } from './toast.js';
+
+// Banner "masalah petualangan kita" — pengingat driving problem di tiap fase (A′).
+// Menjaga benang merah satu masalah lintas sintaks Arends.
+export function problemBanner() {
+  const p = DRIVING_PROBLEM;
+  return `
+    <div class="vm-card p-4" style="background:linear-gradient(135deg,#FFF7ED,#fff);border-left:5px solid var(--peach)">
+      <p class="text-xs font-black text-amber-700 flex items-center gap-1.5"><i class="ph-duotone ph-target"></i> MASALAH PETUALANGAN KITA</p>
+      <p class="font-black text-slate-800 mt-1">${p.emoji} ${p.title}</p>
+      <p class="text-sm text-slate-600 font-semibold mt-0.5">${p.story}</p>
+      <p class="text-sm font-bold text-indigo-brand mt-1.5"><i class="ph-duotone ph-question"></i> ${p.question}</p>
+    </div>`;
+}
 
 // Judul halaman dengan ikon Phosphor (BUKAN emoji — sesuai kebijakan ikon §13).
 export function pageHeader(icon, title, subtitle) {

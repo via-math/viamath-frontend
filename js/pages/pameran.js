@@ -4,7 +4,7 @@
 
 import { Store } from '../store.js';
 import { Api } from '../api.js';
-import { pageHeader, mascotNote, finishButton, wireFinish } from '../components/page-kit.js';
+import { pageHeader, mascotNote, problemBanner, finishButton, wireFinish } from '../components/page-kit.js';
 import { renderIcons, toast, celebrate, playSound } from '../components/toast.js';
 
 export function renderPameran(container) {
@@ -14,7 +14,8 @@ export function renderPameran(container) {
 
   el.innerHTML = `
     ${pageHeader('sparkles', 'Pamerkan Hasil', 'Penyelidik hebat membagikan temuannya! Buat satu karya pecahan, lalu pamerkan ke teman-temanmu.')}
-    ${mascotNote('Inilah saat membanggakan: tunjukkan hasil kerja timmu! Buatlah sebuah soal pecahan dari kehidupan sehari-hari, lengkap dengan jawabannya.')}
+    ${mascotNote('Inilah saat membanggakan: tunjukkan hasil kerja timmu! Ceritakan caramu menyelesaikan masalah pizza, atau buat soal pecahanmu sendiri lengkap dengan jawabannya.')}
+    ${problemBanner()}
 
     <section class="vm-card p-6">
       <h3 class="font-black text-slate-800 mb-4 flex items-center gap-2"><i class="ph-duotone ph-pencil-ruler" style="color:var(--indigo)"></i> Buat Karya Pecahanmu</h3>
