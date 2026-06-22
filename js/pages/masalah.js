@@ -9,7 +9,7 @@ import { renderIcons, toast } from '../components/toast.js';
 
 const CERITA = {
   1: {
-    icon: 'pizza', judul: 'Pesta Pizza Rara',
+    icon: 'pizza', img: 'pizza', judul: 'Pesta Pizza Rara',
     teks: 'Hari ini Rara berulang tahun! Ibu membeli 1 pizza besar lalu memotongnya menjadi 8 bagian sama besar. Rara dan 3 temannya masing-masing mengambil 2 potong pizza.',
     total: 8, filled: 8, color: '#FCD34D',
     orang: [['Rara', 2], ['Teman 1', 2], ['Teman 2', 2], ['Teman 3', 2]],
@@ -20,7 +20,7 @@ const CERITA = {
     ],
   },
   2: {
-    icon: 'cake', judul: 'Berbagi Kue Bersama',
+    icon: 'cake', img: 'kue', judul: 'Berbagi Kue Bersama',
     teks: 'Budi membawa 1 kue ke sekolah untuk berbagi. Kue dipotong menjadi 6 bagian sama besar. Budi memberi 2 potong kepada Ani, 1 potong kepada Doni, dan sisanya untuk dirinya sendiri.',
     total: 6, filled: 6, color: '#A78BFA',
     orang: [['Ani', 2], ['Doni', 1], ['Budi', 3]],
@@ -52,7 +52,7 @@ export function renderMasalah(container) {
       const id = Number(b.dataset.cerita);
       const on = id === aktif;
       b.className = 'vm-btn ' + (on ? 'vm-btn-primary' : 'vm-btn-ghost');
-      b.innerHTML = `<i class="ph-duotone ph-${CERITA[id].icon}"></i> Cerita ${id}: ${id === 1 ? 'Pizza' : 'Kue'}`;
+      b.innerHTML = `<img src="img/${CERITA[id].img}.svg" alt="" style="width:1.3rem;height:1.3rem;vertical-align:-3px"> Cerita ${id}: ${id === 1 ? 'Pizza' : 'Kue'}`;
     });
   }
 
@@ -61,7 +61,7 @@ export function renderMasalah(container) {
     const box = el.querySelector('#cerita-box');
     box.innerHTML = `
       <div class="vm-card p-6 md:p-7 fade-up">
-        <h3 class="text-xl font-black text-slate-800 mb-1 flex items-center gap-2"><i class="ph-duotone ph-${c.icon}" style="color:var(--indigo)"></i> ${c.judul}</h3>
+        <h3 class="text-xl font-black text-slate-800 mb-1 flex items-center gap-2"><img src="img/${c.img}.svg" alt="" style="width:1.7rem;height:1.7rem"> ${c.judul}</h3>
         <p class="text-slate-600 font-semibold leading-relaxed">${c.teks}</p>
 
         <div class="my-6 flex flex-col items-center">

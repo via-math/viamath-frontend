@@ -12,7 +12,7 @@ export function problemBanner() {
   return `
     <div class="vm-card p-4" style="background:linear-gradient(135deg,#FFF7ED,#fff);border-left:5px solid var(--peach)">
       <p class="text-xs font-black text-amber-700 flex items-center gap-1.5"><i class="ph-duotone ph-target"></i> MASALAH PETUALANGAN KITA</p>
-      <p class="font-black text-slate-800 mt-1">${p.emoji} ${p.title}</p>
+      <p class="font-black text-slate-800 mt-1 flex items-center gap-1.5"><img src="img/${p.img}.svg" alt="" style="width:1.4rem;height:1.4rem"> ${p.title}</p>
       <p class="text-sm text-slate-600 font-semibold mt-0.5">${p.story}</p>
       <p class="text-sm font-bold text-indigo-brand mt-1.5"><i class="ph-duotone ph-question"></i> ${p.question}</p>
     </div>`;
