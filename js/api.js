@@ -64,7 +64,11 @@ export const Api = {
 
   // ---- Endpoint spesifik (lihat §6 Blueprint) ----
   registerStudent(student) { return this.send('POST', '/students', student); },
-  saveAnswer(payload)      { return this.send('POST', '/answers', payload); },
+  saveAnswer(payload) {
+    // D2: sertakan label fase PBL (Arends) agar tersimpan permanen di backend.
+    const map = { masalah: 'orientasi', organisasi: 'mengorganisasi', penyelidikan: 'penyelidikan', asesmen: 'asesmen', refleksi: 'evaluasi' };
+    return this.send('POST', '/answers', { ...payload, pblPhase: map[payload.phase] || '' });
+  },
   updateSession(id, patch) { return this.send('PATCH', `/sessions/${id}`, patch); },
   sendShowcase(payload)    { return this.send('POST', '/showcases', payload); },
   saveAssessment(payload)  { return this.send('POST', '/assessments', payload); },
