@@ -6,7 +6,7 @@ import { Store } from '../store.js';
 import { Api } from '../api.js';
 import { fractionCircle, fracHTML, interactiveBar, barModel } from '../components/fraction-circle.js';
 import { checkAnswer } from '../components/fraction-math.js';
-import { pageHeader, mascotNote } from '../components/page-kit.js';
+import { pageHeader, mascotNote, problemBanner } from '../components/page-kit.js';
 import { renderIcons, toast, playSound, celebrate } from '../components/toast.js';
 import { Router } from '../router.js';
 
@@ -18,6 +18,7 @@ export function renderPenyelidikan(container) {
   el.innerHTML = `
     ${pageHeader('search', 'Mari Selidiki', 'Saatnya jadi penyelidik pecahan! Pelajari sumbernya, lalu pecahkan setiap tantangan.')}
     ${mascotNote('Pelajari dulu "Sumber Belajar" untuk membantumu, lalu kerjakan "Tantangan Penyelidikan". Kamu pasti bisa!')}
+    ${problemBanner()}
     <div class="flex gap-2 vm-scroll-x pb-1">
       <button data-tab="materi" class="vm-btn"><i class="ph-duotone ph-book-open"></i> Sumber Belajar</button>
       <button data-tab="aktivitas" class="vm-btn"><i class="ph-duotone ph-flask"></i> Tantangan Penyelidikan</button>
@@ -116,7 +117,12 @@ function renderSenilaiLatihan() {
   ];
   sec.innerHTML = `
     <h3 class="font-black text-slate-800 mb-1 flex items-center gap-2"><i class="ph-duotone ph-equals" style="color:#CA8A04"></i> Pecahan Senilai</h3>
-    <p class="text-slate-500 font-semibold text-sm mb-4">Pecahan senilai = nilainya sama walau angkanya beda. Klik yang <b>senilai</b> dengan soal!</p>
+    <p class="text-slate-500 font-semibold text-sm mb-3">Pecahan senilai = nilainya sama walau angkanya beda. Klik yang <b>senilai</b> dengan soal!</p>
+    <div class="p-3 rounded-xl mb-4" style="background:#FEF9C3">
+      <p class="text-sm font-black text-amber-800 mb-1"><i class="ph-duotone ph-lightbulb"></i> Cara menemukan pecahan senilai</p>
+      <p class="text-sm text-slate-700 font-semibold">Kalikan <b>pembilang DAN penyebut dengan bilangan yang sama</b>.</p>
+      <p class="text-sm text-slate-700 mt-1">Contoh: 1/2 = (1×2)/(2×2) = <b>2/4</b> &nbsp;·&nbsp; 1/2 = (1×3)/(2×3) = <b>3/6</b>.</p>
+    </div>
     <div class="space-y-4">
       ${soal.map((s, i) => `
         <div class="vm-card p-3" style="box-shadow:none;background:#FEFCE8">
@@ -154,7 +160,11 @@ function renderBandingLatihan() {
   ];
   sec.innerHTML = `
     <h3 class="font-black text-slate-800 mb-1 flex items-center gap-2"><i class="ph-duotone ph-scales" style="color:#0D9488"></i> Membandingkan Pecahan</h3>
-    <p class="text-slate-500 font-semibold text-sm mb-4">Gunakan tanda &lt;, &gt;, = . Klik pecahan yang diminta!</p>
+    <p class="text-slate-500 font-semibold text-sm mb-3">Gunakan tanda &lt;, &gt;, = . Klik pecahan yang diminta!</p>
+    <div class="p-3 rounded-xl mb-4" style="background:#F0FDFA">
+      <p class="text-sm font-black text-teal-800 mb-1"><i class="ph-duotone ph-lightbulb"></i> Cara membandingkan</p>
+      <p class="text-sm text-slate-700 font-semibold">Penyebut <b>sama</b> → pembilang lebih besar = pecahan lebih besar (mis. 3/8 &gt; 2/8). Penyebut <b>beda</b> → bandingkan lewat <b>panjang bar</b>/gambar.</p>
+    </div>
     <div class="space-y-4">
       ${soal.map((s, i) => `
         <div class="vm-card p-3" style="box-shadow:none;background:#F0FDFA">
@@ -217,6 +227,61 @@ const AKTIVITAS = [
   },
 ];
 
+// Inkuiri masalah utama (Pizza): dugaan → uji (model) → simpulkan (A′ + B.1).
+// Menghubungkan Fase 3 langsung ke driving problem, bukan sekadar latihan lepas.
+function renderPizzaInquiry() {
+  const sec = document.createElement('section');
+  sec.className = 'vm-card p-6';
+  sec.innerHTML = `
+    <div class="flex items-center gap-2 mb-1 flex-wrap">
+      <h3 class="font-black text-slate-800">🍕 Selidiki Masalah Pizza</h3>
+      <span class="vm-chip" style="background:#FEF3C7;color:#B45309">Masalah utama</span>
+    </div>
+    <p class="text-sm text-slate-600 font-semibold p-3 rounded-xl mb-3" style="background:#FFF7ED">Pizza Rara dipotong 8 bagian. Rara &amp; 3 temannya (4 anak) masing-masing makan 2 potong. Ayo selidiki untuk menjawab masalah kita!</p>
+
+    <label class="text-sm font-black text-slate-700 block mb-1">1) Dugaan — menurutmu, berapa total bagian yang dimakan semua anak?</label>
+    <input class="vm-input" id="pz-dugaan" placeholder="Tulis dugaanmu dulu (mis. 8/8)...">
+
+    <div class="mt-3">
+      <p class="text-sm font-black text-slate-700 mb-1">2) Uji — periksa dengan gambar</p>
+      <div class="flex flex-col items-center p-3 rounded-xl" style="background:#F8FAFC">
+        <div id="pz-visual"></div>
+        <p class="text-xs font-bold text-slate-500 mt-2">4 anak × 2 potong = 8 potong dari 8 bagian.</p>
+      </div>
+    </div>
+
+    <label class="text-sm font-black text-slate-700 block mt-3 mb-1">3) Simpulkan — jadi berapa total bagian pizza yang dimakan semua anak?</label>
+    <div class="flex gap-2">
+      <input class="vm-input" id="pz-simpulan" placeholder="Jawaban akhir (mis. 8/8 = 1 utuh)...">
+      <button class="vm-btn vm-btn-ghost" id="pz-check" style="min-height:44px"><i class="ph-duotone ph-check"></i></button>
+    </div>
+    <p class="text-sm font-bold mt-1" id="pz-fb"></p>`;
+
+  sec.querySelector('#pz-visual').append(fractionCircle(8, 8, '#FDBA74', 150));
+
+  sec.querySelector('#pz-check').addEventListener('click', () => {
+    const sid = Store.get().student?.id;
+    const dugaan = sec.querySelector('#pz-dugaan').value.trim();
+    const val = sec.querySelector('#pz-simpulan').value.trim();
+    const fb = sec.querySelector('#pz-fb');
+    if (!val) { toast('Tulis kesimpulanmu dulu ya!', 'no'); return; }
+    const benar = checkAnswer(val, ['8/8', '1', 'habis', 'semua', 'utuh']);
+    // Simpan dugaan + kesimpulan sebagai data proses berpikir (penelitian).
+    if (dugaan) Api.saveAnswer({ studentId: sid, phase: 'penyelidikan', activityId: 'pizza-dugaan',
+      questionText: 'Dugaan: total bagian pizza yang dimakan semua anak', answerText: dugaan });
+    Api.saveAnswer({ studentId: sid, phase: 'penyelidikan', activityId: 'pizza-simpulan',
+      questionText: 'Kesimpulan: total bagian pizza yang dimakan semua anak', answerText: val, isCorrect: benar });
+    if (benar) {
+      fb.innerHTML = '<i class="ph-duotone ph-check-circle"></i> Tepat! 8 dari 8 bagian = 1 pizza utuh — habis, tidak ada sisa.';
+      fb.style.color = 'var(--ok)'; playSound(true); celebrate();
+    } else {
+      fb.innerHTML = '<i class="ph-duotone ph-x-circle"></i> Lihat gambar: semua 8 potong dimakan. Berapa 8 dari 8?';
+      fb.style.color = 'var(--no)'; playSound(false);
+    }
+  });
+  return sec;
+}
+
 function renderAktivitas() {
   const wrap = document.createElement('div');
   wrap.className = 'space-y-5 fade-up';
@@ -242,6 +307,9 @@ function renderAktivitas() {
     </section>`).join('') + `
     <button id="peny-finish" class="vm-btn vm-btn-primary w-full" style="min-height:52px">
       <i class="ph-duotone ph-check-circle"></i> Penyelidikan Selesai!</button>`;
+
+  // Inkuiri masalah utama (Pizza) tampil paling atas — A′ + B.1.
+  wrap.insertBefore(renderPizzaInquiry(), wrap.firstChild);
 
   // cek tiap jawaban
   const solved = new Set();

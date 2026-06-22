@@ -25,6 +25,15 @@ const PHASE_ORDER = [
   { key: 'refleksi', label: 'Renungkan' },
 ];
 
+// Pemetaan id-langkah → fase PBL Arends (D1: label fase pada data, diturunkan saat ekspor).
+const PBL_PHASE = {
+  masalah: 'orientasi',
+  organisasi: 'mengorganisasi',
+  penyelidikan: 'penyelidikan',
+  asesmen: 'asesmen',
+  refleksi: 'evaluasi',
+};
+
 const state = {
   pin: sessionStorage.getItem(PIN_KEY) || '',
   data: { students: [], answers: [], assessments: [], showcases: [] },
@@ -106,6 +115,7 @@ function columnsFor(tab) {
       { label: 'nama', get: nameOf },
       { label: 'kodeKelas', get: classOf },
       { label: 'fase', get: (r) => r.phase || '' },
+      { label: 'pblPhase', get: (r) => PBL_PHASE[r.phase] || '' },
       { label: 'activityId', get: (r) => r.activityId || '' },
       { label: 'pertanyaan', get: (r) => r.questionText || '' },
       { label: 'jawaban', get: (r) => r.answerText || '' },

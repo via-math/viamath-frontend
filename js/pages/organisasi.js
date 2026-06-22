@@ -3,7 +3,7 @@
 
 import { Store } from '../store.js';
 import { Api } from '../api.js';
-import { pageHeader, mascotNote, finishButton, wireFinish } from '../components/page-kit.js';
+import { pageHeader, mascotNote, problemBanner, finishButton, wireFinish } from '../components/page-kit.js';
 import { renderIcons, toast } from '../components/toast.js';
 
 const KOTAK = [
@@ -22,6 +22,7 @@ export function renderOrganisasi(container) {
   el.innerHTML = `
     ${pageHeader('users', 'Bentuk Tim', 'Petualangan lebih seru bersama tim! Tuliskan anggota timmu, lalu pahami masalahnya bersama-sama.')}
     ${mascotNote('Penyelidik hebat selalu memahami masalahnya dulu, baru mencari jawaban. Ayo pahami bersama timmu!')}
+    ${problemBanner()}
 
     <section class="vm-card p-6">
       <h3 class="font-black text-slate-800 flex items-center gap-2 mb-3">
