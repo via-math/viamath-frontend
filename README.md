@@ -6,6 +6,7 @@ Belajar pecahan lewat cerita, menyelidiki bersama tim, memamerkan hasil temuan, 
 kemampuan — semuanya dalam satu petualangan yang menyenangkan.
 
 ### 👉 Coba sekarang: **[viamath.fun](https://viamath.fun)**
+### 📖 Panduan Guru/Pendamping: **[viamath.fun/panduan.html](https://viamath.fun/panduan.html)**
 
 ---
 
@@ -22,7 +23,7 @@ Setiap langkah memberi bintang dan badge supaya belajar terasa seperti bermain.
 ## Untuk siapa?
 
 - **Siswa Kelas 5 SD** — belajar mandiri atau bersama kelompok.
-- **Guru** — media pendamping pembelajaran dengan pendekatan *Problem Based Learning*.
+- **Guru/pendamping** — media pendamping pembelajaran (*Problem Based Learning*). Lihat **[Panduan Guru](https://viamath.fun/panduan.html)** untuk langkah penggunaan & cara menjelaskan ke siswa.
 - **Bisa dibuka di HP, tablet, maupun komputer**, dan tetap berjalan walau koneksi internet  
 sedang lemah.
 
