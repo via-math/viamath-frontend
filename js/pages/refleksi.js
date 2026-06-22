@@ -3,7 +3,7 @@
 
 import { Store } from '../store.js';
 import { Api } from '../api.js';
-import { pageHeader, mascotNote, problemBanner, finishButton, wireFinish } from '../components/page-kit.js';
+import { pageHeader, mascotNote, finishButton, wireFinish } from '../components/page-kit.js';
 import { renderIcons, toast, celebrate } from '../components/toast.js';
 
 const PERTANYAAN = [
@@ -35,7 +35,6 @@ export function renderRefleksi(container) {
   el.innerHTML = `
     ${pageHeader('heart', 'Renungkan', 'Petualangan hebat selalu diakhiri dengan merenung. Ceritakan pengalamanmu hari ini!')}
     ${mascotNote('Kamu sudah melewati seluruh petualangan! Yuk, renungkan sejenak apa yang kamu rasakan dan pelajari.')}
-    ${problemBanner()}
 
     <section class="vm-card p-6 space-y-4">
       ${PERTANYAAN.map((q, i) => `
